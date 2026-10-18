@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update if you configure a custom domain.
+Sitemap: https://code-neel.github.io/business-auto-labs/sitemap.xml
