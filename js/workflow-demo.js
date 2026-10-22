@@ -387,8 +387,3 @@
   replayButton.addEventListener("click", resetWorkflow);
   resetWorkflow();
 })();
-
-
-
-
-\n
