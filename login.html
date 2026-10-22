@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6f4ed">
+  <title>Client portal sign in | Business Automation Labs</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" crossorigin="anonymous" defer></script>
+  <script src="js/auth-config.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body class="auth-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header auth-header">
+    <a class="brand" href="./" aria-label="Business Automation Labs home"><img class="brand__logo" src="assets/logo.svg" alt=""></a>
+    <a class="auth-back" href="index.html">Back to website <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="auth-main section-shell" id="main">
+    <section class="auth-card" aria-labelledby="auth-title">
+      <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> Client portal</p>
+      <h1 id="auth-title">Welcome<br><em>back.</em></h1>
+      <p class="auth-intro">Sign in with the business email address you were invited with.</p>
+      <div class="auth-notice" data-auth-setup role="status">Portal setup is incomplete. Connect the approved authentication project before inviting users.</div>
+      <p class="auth-status" data-auth-status role="status" aria-live="polite"></p>
+      <form class="auth-form" data-login-form>
+        <label for="email">Business email</label>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button button--dark auth-submit" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+      </form>
+      <form class="auth-form auth-form--recovery" data-recovery-form hidden>
+        <label for="new-password">New password</label>
+        <input id="new-password" name="new-password" type="password" autocomplete="new-password" minlength="12" required>
+        <label for="confirm-password">Confirm new password</label>
+        <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" minlength="12" required>
+        <button class="button button--dark auth-submit" type="submit">Update password <span aria-hidden="true">↗</span></button>
+      </form>
+      <button class="auth-reset-link" type="button" data-reset-button>Forgot your password?</button>
+      <div class="auth-divider"><span></span> ACCESS BY INVITATION ONLY <span></span></div>
+      <p class="auth-footnote">Need access? Contact the Business Automation Labs team. New accounts are not created from this public page.</p>
+      <a class="auth-contact" href="mailto:businessautolabs@gmail.com">businessautolabs@gmail.com</a>
+    </section>
+    <aside class="auth-aside" aria-label="Portal security note"><img class="auth-aside__logo" src="assets/logo-mark.svg" alt=""><p>Private work belongs<br>behind proper access rules.</p><small>Authentication is managed by a dedicated identity provider. This website does not keep passwords.</small></aside>
+  </main>
+  <footer class="auth-footer"><span>© <span data-current-year></span> Business Automation Labs</span><a href="index.html">Public website</a></footer>
+</body>
+</html>

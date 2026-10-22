@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
 
-
-# Update if you configure a custom domain.
 Sitemap: https://business-auto-labs.github.io/business-auto-labs/sitemap.xml
-
