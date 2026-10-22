@@ -313,6 +313,14 @@
     playButton.firstChild.textContent = "Continue example ";
   }
 
+  function revealAnimation() {
+    const animation = demo.querySelector(".chat-simulator");
+    animation?.scrollIntoView({
+      behavior: reducedMotion.matches ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
   async function runWorkflow() {
     if (playing) {
       playbackToken += 1;
@@ -323,8 +331,12 @@
       return;
     }
 
+    revealAnimation();
+
     const workflow = workflows[activeWorkflowName];
-    if (activeStepIndex >= workflow.steps.length) resetWorkflow();
+    if (activeStepIndex >= workflow.steps.length) {
+      resetWorkflow();
+    }
 
     const token = ++playbackToken;
     setPlayingState(true);
@@ -384,6 +396,9 @@
   });
 
   playButton.addEventListener("click", runWorkflow);
-  replayButton.addEventListener("click", resetWorkflow);
+  replayButton.addEventListener("click", () => {
+    resetWorkflow();
+    revealAnimation();
+  });
   resetWorkflow();
 })();

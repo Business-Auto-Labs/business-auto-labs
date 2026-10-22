@@ -738,7 +738,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
   .workflow-tab { flex: 0 0 auto; padding-inline: 12px; font-size: 14px; }
   .workflow-panel { padding: 10px; }
   .workflow-main { grid-template-columns: 1fr; gap: 10px; }
-  .chat-simulator { min-height: 400px; }
+  .chat-simulator { min-height: 400px; scroll-margin-top: 8px; }
   .chat-transcript { min-height: 270px; max-height: 340px; }
   .workflow-summary { padding: 17px; }
   .workflow-progress { margin-top: 12px; }
