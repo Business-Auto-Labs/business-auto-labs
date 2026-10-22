@@ -1,57 +1,77 @@
-// Small progressive enhancements: mobile navigation, contact configuration, date, and decorative hero pointer response.
-const navigationButton = document.querySelector(".menu-toggle");
-const primaryNavigation = document.querySelector(".primary-navigation");
+// Lightweight enhancements keep the public page usable without a framework.
+const menuButton = document.querySelector(".menu-toggle");
+const primaryNavigation = document.querySelector(".primary-nav");
 
-if (navigationButton && primaryNavigation) {
-  navigationButton.addEventListener("click", () => {
-    const isOpen = navigationButton.getAttribute("aria-expanded") === "true";
-    navigationButton.setAttribute("aria-expanded", String(!isOpen));
+if (menuButton && primaryNavigation) {
+  const closeMenu = () => {
+    menuButton.setAttribute("aria-expanded", "false");
+    primaryNavigation.classList.remove("is-open");
+  };
+  menuButton.addEventListener("click", () => {
+    const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+    menuButton.setAttribute("aria-expanded", String(!isOpen));
     primaryNavigation.classList.toggle("is-open", !isOpen);
   });
   primaryNavigation.addEventListener("click", (event) => {
-    if (event.target.closest("a")) {
-      navigationButton.setAttribute("aria-expanded", "false");
-      primaryNavigation.classList.remove("is-open");
-    }
+    if (event.target.closest("a")) closeMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
   });
 }
 
-const configuredEmail = window.BUSINESS_SITE_CONFIG?.contactEmail?.trim();
-const emailPlaceholder = document.querySelector("[data-contact-email]");
-const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredEmail || "");
+// Reveal content only when supported and the visitor has not requested reduced motion.
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+if ("IntersectionObserver" in window && !reducedMotion.matches) {
+  document.documentElement.classList.add("motion-ready");
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll("[data-reveal]").forEach((element) => revealObserver.observe(element));
+}
 
-if (emailPlaceholder && validEmail) {
-  const emailLink = document.createElement("a");
-  emailLink.className = "contact-email";
-  emailLink.href = "mailto:" + configuredEmail;
-  emailLink.append(document.createTextNode(configuredEmail + " "));
-  const arrow = document.createElement("span");
-  arrow.setAttribute("aria-hidden", "true");
-  arrow.textContent = "↗";
-  emailLink.append(arrow);
-  emailPlaceholder.replaceWith(emailLink);
+// Tilt only the decorative hero panel on mouse-like pointers.
+const tiltPanel = document.querySelector("[data-tilt]");
+const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+if (tiltPanel && finePointer.matches && !reducedMotion.matches) {
+  tiltPanel.addEventListener("pointermove", (event) => {
+    const bounds = tiltPanel.getBoundingClientRect();
+    const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+    tiltPanel.style.setProperty("--tilt-x", (vertical * -3).toFixed(2) + "deg");
+    tiltPanel.style.setProperty("--tilt-y", (horizontal * 3).toFixed(2) + "deg");
+  });
+  tiltPanel.addEventListener("pointerleave", () => {
+    tiltPanel.style.removeProperty("--tilt-x");
+    tiltPanel.style.removeProperty("--tilt-y");
+  });
 }
 
 document.querySelectorAll("[data-current-year]").forEach((element) => {
-  element.textContent = new Date().getFullYear();
+  element.textContent = String(new Date().getFullYear());
 });
 
-// Only mouse-like pointers tilt the decorative art; touch users and reduced-motion users keep it still.
-const heroArtwork = document.querySelector(".hero-art");
-const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+// Keep the visible address and mail link synchronized with the public config.
+const configuredEmail = window.BUSINESS_SITE_CONFIG?.contactEmail?.trim();
+if (configuredEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredEmail)) {
+  document.querySelectorAll("[data-contact-email]").forEach((link) => {
+    link.href = "mailto:" + configuredEmail;
+    const text = Array.from(link.childNodes).find((node) => node.nodeType === Node.TEXT_NODE);
+    if (text) text.textContent = configuredEmail + " ";
+  });
+}
 
-if (heroArtwork && finePointer.matches && !motionPreference.matches) {
-  heroArtwork.addEventListener("pointermove", (event) => {
-    const bounds = heroArtwork.getBoundingClientRect();
-    const horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
-    heroArtwork.style.setProperty("--tilt-x", `${(vertical * -5).toFixed(2)}deg`);
-    heroArtwork.style.setProperty("--tilt-y", `${(horizontal * 5).toFixed(2)}deg`);
-    heroArtwork.style.setProperty("--shift-x", `${(horizontal * 7).toFixed(1)}px`);
-    heroArtwork.style.setProperty("--shift-y", `${(vertical * 7).toFixed(1)}px`);
-  });
-  heroArtwork.addEventListener("pointerleave", () => {
-    ["--tilt-x", "--tilt-y", "--shift-x", "--shift-y"].forEach((property) => heroArtwork.style.removeProperty(property));
-  });
+// Only show a WhatsApp link when a complete international number is configured.
+const whatsappNumber = window.BUSINESS_SITE_CONFIG?.whatsappNumber?.replace(/\D/g, "") || "";
+const whatsappNumberConfirmed = window.BUSINESS_SITE_CONFIG?.whatsappNumberConfirmed === true;
+const whatsappLink = document.querySelector("[data-whatsapp-link]");
+// Require explicit owner confirmation and an international-length digit string.
+if (whatsappLink && whatsappNumberConfirmed && /^\d{8,15}$/.test(whatsappNumber)) {
+  whatsappLink.href = "https://wa.me/" + whatsappNumber;
+  whatsappLink.hidden = false;
 }
