@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#f5f2eb"/><text x="8" y="43" font-family="Georgia,serif" font-size="28" fill="#242522">B</text><circle cx="32" cy="36" r="2.5" fill="#a98552"/><text x="37" y="43" font-family="Georgia,serif" font-size="28" fill="#242522">A</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 68 68" role="img" aria-labelledby="title description">
+  <title id="title">Business Automation Labs monogram</title>
+  <desc id="description">A connected B and A monogram in forest green, ivory, and gold.</desc>
+  <rect x="2" y="2" width="64" height="64" rx="16" fill="#172b23"/>
+  <rect x="2.75" y="2.75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#d1bd94" stroke-opacity=".62" stroke-width="1.5"/>
+  <path d="M17 18v32M17 18h12c5 0 8 3 8 8s-3 8-8 8H17M17 34h13c6 0 9 3 9 8s-3 8-9 8H17" fill="none" stroke="#f6f4ed" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  <path d="m38 50 10-32 10 32M42 39h12" fill="none" stroke="#f6f4ed" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  <path d="M35 29c2-3 4-4 7-4" fill="none" stroke="#d1bd94" stroke-linecap="round" stroke-width="1.7"/>
+  <circle cx="43" cy="24.5" r="1.8" fill="#d1bd94"/>
+</svg>
