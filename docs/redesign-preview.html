@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2e9">
+  <title>Archived redesign preview | Business Automation Labs</title>
+  <meta name="description" content="Archived WhatsApp-only design concept. Visit the homepage for the current Business Automation Labs services.">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f5f2e9;
+      --paper-light: #fcfaf4;
+      --ink: #202622;
+      --muted: #626a63;
+      --green: #244a38;
+      --green-deep: #172b22;
+      --gold: #a1824f;
+      --line: rgba(32, 38, 34, .16);
+      --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      --sans: "Aptos", "Segoe UI", Arial, sans-serif;
+      --page: 1220px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.62 var(--sans); }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    .preview-note { display: flex; justify-content: center; gap: 8px; padding: 7px 16px; color: #efe9da; background: var(--green-deep); font-size: 12px; letter-spacing: .03em; }
+    .wrap { width: min(var(--page), calc(100% - 64px)); margin-inline: auto; }
+    .header { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line); background: rgba(245, 242, 233, .95); backdrop-filter: blur(12px); }
+    .header__inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; flex: 0 0 auto; }
+    .brand__logo { width: clamp(205px, 25vw, 270px); height: auto; display: block; transform-origin: left center; transition: transform .26s ease, filter .26s ease; }
+    .brand:hover .brand__logo, .brand:focus-visible .brand__logo { transform: translateY(-1px) scale(1.025); filter: drop-shadow(0 5px 7px rgba(23,43,35,.14)); }
+    @media (prefers-reduced-motion: reduce) { .brand__logo, .brand:hover .brand__logo { transform: none; transition: none; filter: none; } }
+    .brand__mark { font: 500 30px/1 var(--serif); letter-spacing: -.12em; }
+    .brand__mark b { color: var(--gold); font-weight: 500; }
+    .brand__name { font-size: 9px; line-height: 1.45; font-weight: 700; letter-spacing: 1.35px; }
+    .nav { display: flex; align-items: center; gap: clamp(16px, 2vw, 29px); color: #3d4941; font-size: 14px; }
+    .nav a:not(.nav__cta):hover { color: var(--green); }
+    .nav__cta, .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 15px; padding: 0 18px; border: 1px solid var(--green); background: var(--green); color: white; transition: transform .2s ease, background .2s ease; }
+    .nav__cta:hover, .button:hover { transform: translateY(-2px); background: var(--green-deep); }
+    .button--light { border-color: rgba(32, 38, 34, .25); background: transparent; color: var(--ink); }
+    .button--light:hover { background: var(--paper-light); }
+    .hero { min-height: 650px; display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: clamp(30px, 6vw, 76px); padding-block: 68px 72px; }
+    .eyebrow { margin: 0 0 18px; color: var(--green); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; display: inline-block; width: 7px; height: 7px; margin: 0 10px 1px 0; border-radius: 50%; background: var(--gold); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: var(--serif); font-weight: 500; letter-spacing: -.05em; line-height: 1.06; }
+    h1 { max-width: 700px; margin-bottom: 22px; font-size: clamp(48px, 5.7vw, 76px); }
+    h1 em, h2 em { color: var(--green); font-weight: 500; }
+    .hero__copy > p:not(.eyebrow) { max-width: 600px; margin-bottom: 28px; color: var(--muted); font-size: clamp(17px, 1.5vw, 19px); line-height: 1.68; }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .hero__note { margin: 18px 0 0; color: var(--muted); font-size: 13px; }
+    .chat-scene { position: relative; min-height: 450px; display: grid; place-items: center; overflow: hidden; background: #e8e4d8; }
+    .chat-scene::before, .chat-scene::after { position: absolute; content: ""; width: 76%; aspect-ratio: 1; border: 1px solid rgba(161, 130, 79, .33); border-radius: 50%; }
+    .chat-scene::after { width: 60%; border-color: rgba(36, 74, 56, .2); transform: rotate(44deg) scaleY(.62); }
+    .chat-window { position: relative; z-index: 1; width: min(390px, 78%); padding: 18px; border: 1px solid rgba(255,255,255,.22); background: var(--green-deep); color: #f9f7ef; box-shadow: 0 25px 60px rgba(31, 43, 35, .2); transform: rotate(-1deg); }
+    .chat-window__top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,.15); }
+    .chat-brand { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 650; }
+    .chat-brand__icon { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid rgba(211, 194, 157, .55); border-radius: 50%; color: #dcc79c; font: 16px var(--serif); }
+    .chat-label { color: #c6cfc5; font-size: 10px; letter-spacing: .08em; }
+    .chat-day { margin: 14px auto; width: fit-content; padding: 3px 10px; border-radius: 30px; background: rgba(255,255,255,.09); color: #d4d9d1; font-size: 11px; }
+    .bubble { max-width: 88%; margin-bottom: 10px; padding: 10px 12px; font-size: 14px; line-height: 1.5; }
+    .bubble--customer { margin-right: auto; border-radius: 12px 12px 12px 3px; background: rgba(255,255,255,.12); }
+    .bubble--bot { margin-left: auto; border-radius: 12px 12px 3px 12px; background: rgba(192, 212, 186, .17); }
+    .bubble__who { display: block; margin-bottom: 3px; color: #cfbd92; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .chat-options { display: flex; flex-wrap: wrap; gap: 7px; justify-content: flex-end; margin: 8px 0 13px; }
+    .chat-options span { padding: 6px 9px; border: 1px solid rgba(211,194,157,.6); border-radius: 2px; color: #e8dcc2; font-size: 11px; }
+    .handoff { display: flex; align-items: center; gap: 8px; margin-top: 15px; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.15); color: #d3d9d0; font-size: 12px; }
+    .handoff b { color: #d9c28d; font-weight: 500; }
+    .scene-label { position: absolute; right: 16px; bottom: 14px; z-index: 2; color: #535e55; font-size: 10px; letter-spacing: .09em; text-align: right; }
+    .capabilities { padding-block: 74px 80px; background: var(--paper-light); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 31px; }
+    h2 { margin-bottom: 0; font-size: clamp(40px, 4.8vw, 60px); }
+    .section-head__copy { max-width: 400px; margin: 0 0 4px; color: var(--muted); }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .card { min-height: 226px; padding: 19px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background .2s, transform .2s; }
+    .card:hover { position: relative; z-index: 1; transform: translateY(-3px); background: white; }
+    .card__number { color: var(--gold); font-size: 12px; letter-spacing: .08em; }
+    .card__icon { width: 38px; height: 38px; display: grid; place-items: center; margin: 16px 0 13px; border-radius: 50%; background: #e4e9e0; color: var(--green); font: 20px var(--serif); }
+    h3 { margin-bottom: 8px; font: 500 22px/1.18 var(--serif); letter-spacing: -.025em; }
+    .card p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .steps { padding-block: 70px 74px; background: #e9e8de; }
+    .steps__grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 7%; align-items: start; }
+    .steps__intro p:not(.eyebrow) { max-width: 385px; margin: 18px 0 0; color: var(--muted); }
+    .step-list { border-top: 1px solid var(--line); }
+    .step { display: grid; grid-template-columns: 46px 1fr; gap: 13px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+    .step__number { color: var(--gold); font-size: 13px; letter-spacing: .07em; }
+    .step h3 { margin: 0 0 4px; }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+    .sample { padding-block: 72px; }
+    .sample__panel { display: grid; grid-template-columns: .75fr 1.25fr; gap: 6%; align-items: center; padding: clamp(24px, 4vw, 48px); background: var(--green-deep); color: var(--paper); }
+    .sample .eyebrow { color: #dec998; }
+    .sample h2 { color: var(--paper); font-size: clamp(37px, 4vw, 52px); }
+    .sample h2 em { color: #d8c394; }
+    .sample__disclaimer { margin: 16px 0 0; color: #c7cfc6; font-size: 13px; }
+    .journeys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .journey { min-height: 165px; padding: 15px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); }
+    .journey span { display: block; margin-bottom: 12px; color: #d8c394; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .journey h3 { font-size: 20px; }
+    .journey p { margin: 0; color: #d2d8d0; font-size: 14px; line-height: 1.5; }
+    .about { padding-block: 60px; border-top: 1px solid var(--line); }
+    .about__inner { display: grid; grid-template-columns: .9fr 1.1fr; gap: 9%; align-items: center; }
+    .about__stamp { width: min(260px, 70vw); aspect-ratio: 1; display: grid; place-items: center; margin-inline: auto; border: 1px solid rgba(161,130,79,.55); border-radius: 50%; color: var(--green); font: 500 39px/1 var(--serif); letter-spacing: -.08em; text-align: center; position: relative; }
+    .about__stamp::before { position: absolute; inset: 12%; border: 1px solid rgba(36,74,56,.2); border-radius: 50%; content: ""; }
+    .about__stamp small { position: absolute; bottom: 13%; color: var(--muted); font: 700 9px var(--sans); letter-spacing: .15em; }
+    .about__copy > p:not(.eyebrow) { max-width: 570px; color: var(--muted); }
+    .contact { padding-block: 65px; background: #e8e1d4; }
+    .contact__inner { display: grid; grid-template-columns: 1fr .9fr; gap: 8%; align-items: center; }
+    .contact__inner > div > p:not(.eyebrow) { max-width: 410px; color: var(--muted); font-size: 17px; }
+    .contact-links { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+    .contact-links a { border-bottom: 1px solid var(--gold); padding-bottom: 3px; font: 500 20px var(--serif); }
+    .footer { padding-block: 21px; color: var(--muted); font-size: 13px; }
+    .footer__inner { display: flex; align-items: center; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+    .footer p { margin: 0; }
+    @media (max-width: 900px) {
+      .wrap { width: min(var(--page), calc(100% - 48px)); }
+      .nav { gap: 14px; font-size: 13px; }
+      .nav__cta { min-height: 43px; padding-inline: 13px; }
+      .hero { min-height: unset; grid-template-columns: 1fr .9fr; gap: 25px; padding-block: 56px; }
+      .chat-scene { min-height: 390px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .card { min-height: 190px; }
+      .journeys { grid-template-columns: 1fr; }
+      .journey { min-height: unset; }
+    }
+    @media (max-width: 680px) {
+      html { scroll-padding-top: 68px; }
+      .wrap { width: calc(100% - 40px); }
+      .header__inner { min-height: 68px; }
+      .nav { display: none; }
+      .nav__cta { display: inline-flex; }
+      .hero { grid-template-columns: 1fr; gap: 29px; padding-block: 42px 48px; }
+      h1 { font-size: clamp(45px, 12vw, 62px); }
+      .hero__copy > p:not(.eyebrow) { font-size: 17px; }
+      .chat-scene { min-height: 380px; }
+      .chat-window { width: min(390px, 86%); padding: 15px; }
+      .section-head { display: block; }
+      .section-head__copy { margin-top: 13px; }
+      .capabilities { padding-block: 52px; }
+      .cards { grid-template-columns: 1fr; }
+      .card { min-height: unset; padding: 17px; }
+      .card__icon { margin-block: 12px; }
+      .steps { padding-block: 52px; }
+      .steps__grid, .sample__panel, .about__inner, .contact__inner { grid-template-columns: 1fr; gap: 25px; }
+      .steps__intro p:not(.eyebrow) { margin-top: 12px; }
+      .sample { padding-block: 48px; }
+      .sample__panel { gap: 22px; }
+      .journeys { grid-template-columns: 1fr; }
+      .about { padding-block: 50px; }
+      .about__stamp { width: 205px; }
+      .contact { padding-block: 50px; }
+      .footer__inner { align-items: flex-start; flex-direction: column; gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-note">ARCHIVED DESIGN PREVIEW · WhatsApp-only concept · <a href="../index.html">view current services</a></div>
+  <header class="header">
+    <div class="wrap header__inner">
+      <a class="brand" href="../" aria-label="Business Automation Labs home">
+        <img class="brand__logo" src="../assets/logo.svg" alt="">
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#capabilities">What it can do</a>
+        <a href="#how">How it works</a>
+        <a href="#examples">Sample journeys</a>
+        <a class="nav__cta" href="#contact">Talk about your chatbot <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div class="hero__copy">
+        <p class="eyebrow">WhatsApp chatbot automation for businesses</p>
+        <h1 id="hero-title">Make every WhatsApp chat a <em>useful next step.</em></h1>
+        <p>We build WhatsApp chatbots that answer customer questions and help people take action—like finding a product, placing an order, booking an appointment, or reaching your team.</p>
+        <div class="actions">
+          <a class="button" href="#contact">Plan your WhatsApp chatbot <span aria-hidden="true">↗</span></a>
+          <a class="button button--light" href="#capabilities">Explore what it can do <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="hero__note">Focused on WhatsApp chatbots today. Built around your business and your customers.</p>
+      </div>
+      <div class="chat-scene" aria-label="Illustrative WhatsApp chatbot conversation">
+        <div class="chat-window">
+          <div class="chat-window__top">
+            <div class="chat-brand"><span class="chat-brand__icon" aria-hidden="true">BA</span><span>Business chat</span></div>
+            <span class="chat-label">SAMPLE FLOW</span>
+          </div>
+          <div class="chat-day">Illustrative conversation</div>
+          <div class="bubble bubble--customer"><span class="bubble__who">Customer</span>Hi, can I see the available options?</div>
+          <div class="bubble bubble--bot"><span class="bubble__who">Chatbot</span>Of course. I can help you explore products, place an order, or ask a question.</div>
+          <div class="chat-options"><span>Browse products</span><span>Place an order</span><span>Talk to the team</span></div>
+          <div class="bubble bubble--customer"><span class="bubble__who">Customer</span>I have a question about delivery.</div>
+          <div class="bubble bubble--bot"><span class="bubble__who">Chatbot</span>I can share the delivery details or pass your question to a person.</div>
+          <div class="handoff"><span aria-hidden="true">↗</span><span><b>Human handoff</b> when a person should take over</span></div>
+        </div>
+        <span class="scene-label">A CONCEPT CONVERSATION<br>NOT CLIENT WORK</span>
+      </div>
+    </section>
+
+    <section class="capabilities" id="capabilities" aria-labelledby="cap-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">What we build</p><h2 id="cap-title">A helpful chatbot.<br><em>For real customer needs.</em></h2></div>
+          <p class="section-head__copy">Each conversation can be shaped around the questions customers ask and the next steps your business can support.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><span class="card__number">01</span><span class="card__icon" aria-hidden="true">?</span><h3>Answer common questions</h3><p>Share useful information and guide customers through clear choices, any time the chatbot is available.</p></article>
+          <article class="card"><span class="card__number">02</span><span class="card__icon" aria-hidden="true">↗</span><h3>Guide product discovery</h3><p>Help people explore options and send them to the right product page or checkout link.</p></article>
+          <article class="card"><span class="card__number">03</span><span class="card__icon" aria-hidden="true">⌁</span><h3>Support orders and bookings</h3><p>Collect the details a workflow needs, then guide the customer to an order, appointment, or team confirmation.</p></article>
+          <article class="card"><span class="card__number">04</span><span class="card__icon" aria-hidden="true">✳</span><h3>Share opted-in offers</h3><p>Send relevant promotions to customers who have agreed to receive them, with a clear route to your team.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps" id="how" aria-labelledby="steps-title">
+      <div class="wrap steps__grid">
+        <div class="steps__intro">
+          <p class="eyebrow">How it works</p>
+          <h2 id="steps-title">From first message<br>to <em>the right action.</em></h2>
+          <p>We start with the customer journey and design the chatbot around the way your business actually serves people.</p>
+        </div>
+        <div class="step-list">
+          <article class="step"><span class="step__number">01</span><div><h3>Understand the questions</h3><p>Map what customers ask and where they get stuck today.</p></div></article>
+          <article class="step"><span class="step__number">02</span><div><h3>Design the conversation</h3><p>Choose helpful replies, choices, links, and the moments a person should step in.</p></div></article>
+          <article class="step"><span class="step__number">03</span><div><h3>Build and review</h3><p>Shape the WhatsApp chatbot flow, then review the experience against your real process.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sample" id="examples" aria-labelledby="sample-title">
+      <div class="wrap sample__panel">
+        <div>
+          <p class="eyebrow">Illustrative use cases</p>
+          <h2 id="sample-title">Different businesses.<br><em>Different conversations.</em></h2>
+          <p class="sample__disclaimer">These are example scenarios to explain the service, not published client projects or results.</p>
+        </div>
+        <div class="journeys">
+          <article class="journey"><span>Product enquiry</span><h3>Question → product page</h3><p>Answer a question, show relevant choices, and share a useful link.</p></article>
+          <article class="journey"><span>Appointment request</span><h3>Need → booking step</h3><p>Collect the request and direct the customer to a booking flow or team confirmation.</p></article>
+          <article class="journey"><span>Customer support</span><h3>Question → human help</h3><p>Offer known answers and pass the context to a person when needed.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" aria-labelledby="about-title">
+      <div class="wrap about__inner">
+        <div class="about__stamp" aria-hidden="true">B·A<small>TWO-FOUNDER STUDIO</small></div>
+        <div class="about__copy">
+          <p class="eyebrow">About Business Automation Labs</p>
+          <h2 id="about-title">Practical automation,<br><em>starting with WhatsApp.</em></h2>
+          <p>We’re a two-founder studio focused on building WhatsApp chatbots for businesses. We begin with how your customers ask for help, then shape an experience that gives them a useful next step and keeps your team in control.</p>
+          <p>WhatsApp is our current focus. As the studio grows, we may explore more ways to automate business conversations.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact__inner">
+        <div><p class="eyebrow">Start with one customer journey</p><h2 id="contact-title">What should your<br><em>chatbot help with?</em></h2></div>
+        <div>
+          <p>Tell us what customers ask, what they need to do, and when your team should take over.</p>
+          <div class="contact-links">
+            <a href="mailto:businessautolabs@gmail.com">businessautolabs@gmail.com ↗</a>
+            <a href="tel:7828811571">7828811571</a>
+            <a href="tel:8591897995">8591897995</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="wrap footer__inner"><p>Business Automation Labs · WhatsApp chatbot automation</p><a href="#top">Back to top ↑</a></div></footer>
+</body>
+</html>

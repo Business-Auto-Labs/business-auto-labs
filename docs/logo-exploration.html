@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6f4ed">
+  <title>Logo directions | Business Automation Labs</title>
+  <meta name="description" content="Three vector identity concepts for Business Automation Labs.">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body.logo-demo { min-height: 100vh; background: var(--paper); }
+    .logo-demo__header { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 12px max(24px, calc((100vw - 1120px) / 2)); border-bottom: 1px solid var(--line); }
+    .logo-demo__back { min-height: 44px; display: inline-flex; align-items: center; color: var(--green); font-size: 14px; }
+    .logo-demo__main { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding-block: clamp(40px, 7vw, 82px); }
+    .logo-demo__intro { max-width: 710px; margin-bottom: 30px; }
+    .logo-demo__intro h1 { margin-bottom: 14px; font-size: clamp(42px, 6vw, 68px); }
+    .logo-demo__intro p:not(.eyebrow) { color: var(--muted); font-size: 17px; line-height: 1.65; }
+    .logo-option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .logo-option { min-width: 0; overflow: hidden; border: 1px solid var(--line); background: rgba(255,255,255,.42); }
+    .logo-option__stage { min-height: 194px; display: grid; place-items: center; padding: 22px; background: #fffefa; }
+    .logo-option__stage img { width: min(100%, 360px); height: auto; transform-origin: center; transition: transform .27s var(--ease), filter .27s var(--ease); }
+    .logo-option:hover .logo-option__stage img { transform: translateY(-2px) scale(1.025); filter: drop-shadow(0 7px 12px rgba(23,43,35,.12)); }
+    .logo-option__copy { padding: 18px; }
+    .logo-option__copy small { color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .logo-option__copy h2 { margin: 5px 0 8px; font-size: 25px; }
+    .logo-option__copy p { min-height: 74px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .logo-option__status { display: inline-flex; margin-top: 13px; padding: 5px 8px; border: 1px solid rgba(33,78,62,.24); color: var(--green); font-size: 12px; }
+    .logo-demo__footer { padding: 18px 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center; }
+    @media (max-width: 800px) { .logo-option-grid { grid-template-columns: 1fr; } .logo-option__stage { min-height: 160px; } .logo-option__copy p { min-height: 0; } }
+    @media (prefers-reduced-motion: reduce) { .logo-option__stage img, .logo-option:hover .logo-option__stage img { transform: none; transition: none; filter: none; } }
+  </style>
+</head>
+<body class="logo-demo">
+  <header class="logo-demo__header">
+    <a class="brand" href="../" aria-label="Business Automation Labs home"><img class="brand__logo" src="../assets/logo.svg" alt=""></a>
+    <a class="logo-demo__back" href="../">View current homepage <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="logo-demo__main">
+    <div class="logo-demo__intro">
+      <p class="eyebrow">Identity study · 3 directions</p>
+      <h1>Three marks.<br><em>One clear studio.</em></h1>
+      <p>Each vector option brings the same forest-green, ivory, and restrained-gold palette to a different part of the work: connected automation, moving workflows, or a creative digital canvas. Hover a concept for a restrained motion cue.</p>
+    </div>
+    <section class="logo-option-grid" aria-label="Logo concept options">
+      <article class="logo-option">
+        <div class="logo-option__stage"><img src="../assets/logo.svg" alt="Connected Monogram logo concept for Business Automation Labs"></div>
+        <div class="logo-option__copy"><small>01 · Connected systems</small><h2>Connected Monogram</h2><p>A precise BA mark with a gold connector, paired with a clear sans-serif wordmark. Suggests conversations and services joined into one customer path.</p><span class="logo-option__status">Current site logo</span></div>
+      </article>
+      <article class="logo-option">
+        <div class="logo-option__stage"><img src="../assets/logo-concept-02.svg" alt="Orbit Path logo concept for Business Automation Labs"></div>
+        <div class="logo-option__copy"><small>02 · Automation motion</small><h2>Orbit Path</h2><p>A circular path and two connection points suggest an ongoing workflow while keeping the same studio wordmark.</p></div>
+      </article>
+      <article class="logo-option">
+        <div class="logo-option__stage"><img src="../assets/logo-concept-03.svg" alt="Studio Frame logo concept for Business Automation Labs"></div>
+        <div class="logo-option__copy"><small>03 · Digital creative</small><h2>Studio Frame</h2><p>An open frame surrounds the monogram, drawing on the edges of a design canvas and the panels of a website layout.</p></div>
+      </article>
+    </section>
+  </main>
+  <footer class="logo-demo__footer">Concept preview only · The live pages currently use option 01.</footer>
+</body>
+</html>
