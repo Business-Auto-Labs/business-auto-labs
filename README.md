@@ -34,7 +34,7 @@ Three vector logo concepts are available for review in the [logo comparison prev
 
 The four small service illustrations are animated HTML and CSS sketches. They help visitors picture the kinds of work offered; they are not recordings of client projects or proof of campaign results. A separate interactive demo explains WhatsApp chatbot flows using fictional businesses. It does not send messages, process orders, take bookings, or promise sales.
 
-Add a real case study only after its details are verified and permission to publish is confirmed. Use [docs/CASE_STUDY_WORKSHEET.md](docs/CASE_STUDY_WORKSHEET.md). Campaign copy should describe agreed deliverables and must not promise sales, reach, or audience growth.
+Add a real case study only after its details are verified and permission to publish is confirmed. Keep unapproved project notes and the internal worksheet in private storage. Campaign copy should describe agreed deliverables and must not promise sales, reach, or audience growth.
 
 ## Contact and login
 
