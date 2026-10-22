@@ -1,0 +1,41 @@
+body.auth-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--paper); }
+.auth-header { position: relative; flex: 0 0 auto; }
+.auth-back,.auth-signout { border: 0; background: transparent; color: var(--ink-soft); font-size: 11px; cursor: pointer; }
+.auth-back span { padding-left: 5px; color: var(--gold); }
+.auth-main { flex: 1; display: grid; grid-template-columns: 1fr .74fr; align-items: center; gap: 10%; padding-block: 42px; }
+.auth-card { width: min(430px,100%); margin-inline: auto; }
+.auth-card h1,.portal-main h1 { margin-bottom: 13px; font-size: clamp(50px,6vw,72px); }
+.auth-intro { margin-bottom: 20px; color: var(--muted); font-size: 13px; }
+.auth-notice { margin: 17px 0; padding: 11px 13px; border-left: 2px solid var(--gold); background: #eee8da; color: var(--ink-soft); font-size: 10px; line-height: 1.6; }
+.auth-status { min-height: 20px; margin: 9px 0 12px; color: var(--green); font-size: 11px; }
+.auth-status.is-error { color: #9b3a2e; }
+.auth-form { display: grid; gap: 8px; }
+.auth-form label { margin-top: 8px; color: var(--ink-soft); font-size: 10px; font-weight: 600; }
+.auth-form input { width: 100%; height: 44px; padding: 0 12px; border: 1px solid var(--line); background: rgba(255,255,255,.55); color: var(--ink); font: 14px var(--sans); }
+.auth-form input:focus { border-color: var(--green); outline: 2px solid rgba(33,78,62,.15); }
+.auth-form input:disabled,.auth-form button:disabled { opacity: .55; cursor: not-allowed; }
+.auth-submit { width: 100%; margin-top: 11px; cursor: pointer; }
+.auth-reset-link { margin-top: 14px; padding: 0; border: 0; border-bottom: 1px solid var(--gold-soft); background: transparent; color: var(--ink-soft); font-size: 10px; cursor: pointer; }
+.auth-divider { display: flex; align-items: center; gap: 10px; margin: 24px 0 12px; color: var(--muted); font-size: 7px; letter-spacing: 1px; }
+.auth-divider span { flex: 1; height: 1px; background: var(--line); }
+.auth-footnote { margin: 0 0 5px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+.auth-contact { color: var(--green); font-size: 10px; }
+.auth-aside { position: relative; min-height: 405px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 31px; overflow: hidden; background: var(--green-deep); color: var(--paper); }
+.auth-aside:before,.auth-aside:after { content: ""; position: absolute; top: 13%; left: 50%; width: 300px; height: 300px; border: 1px solid rgba(209,189,148,.32); border-radius: 50%; transform: translateX(-50%); }
+.auth-aside:after { width: 210px; height: 210px; top: 23%; border-color: rgba(209,189,148,.2); }
+.auth-aside__logo { width: 88px; height: 88px; position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%,-50%); filter: drop-shadow(0 8px 22px rgba(0,0,0,.16)); }
+.auth-aside p { position: relative; z-index: 1; margin-bottom: 8px; font: 500 24px/1.25 var(--serif); }
+.auth-aside small { position: relative; z-index: 1; max-width: 280px; color: #c3c9c0; font-size: 10px; line-height: 1.6; }
+.auth-footer { width: min(var(--page),calc(100% - 72px)); margin-inline: auto; padding: 15px 0 18px; display: flex; justify-content: space-between; border-top: 1px solid var(--line); color: var(--muted); font-size: 9px; }
+.portal-main { flex: 1; padding-block: 54px 68px; }
+.portal-greeting { margin: 12px 0 20px; color: var(--muted); font-size: 12px; }
+.portal-placeholder { max-width: 690px; margin-top: 25px; padding: 25px; border: 1px solid var(--line); background: rgba(255,255,255,.32); }
+.portal-placeholder__icon { color: var(--gold); font-size: 22px; }
+.portal-placeholder h2 { margin: 8px 0 10px; font-size: 28px; }
+.portal-placeholder p { max-width: 580px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+@media(max-width:760px) {
+  .auth-main { grid-template-columns: 1fr; gap: 25px; padding-block: 34px; }
+  .auth-card { margin: 0 auto; } .auth-aside { min-height: 260px; }
+  .auth-aside:before { top: 2%; } .auth-aside:after { top: 13%; }
+  .auth-aside__logo { top: 35%; } .auth-footer { width: calc(100% - 40px); }
+}
