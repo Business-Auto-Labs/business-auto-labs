@@ -2,5 +2,5 @@
 window.BUSINESS_AUTH_CONFIG = {
   supabaseUrl: "",
   publishableKey: "",
-  siteBaseUrl: "https://business-auto-labs.github.io/business-auto-labs"
+  siteBaseUrl: "https://businessautomationlabs.com"
 };

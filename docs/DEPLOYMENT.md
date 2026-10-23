@@ -6,7 +6,7 @@ Open this folder in VS Code and use Live Server, or run python -m http.server 80
 
 ## Publish with GitHub Pages
 
-The repository is Business-Auto-Labs/business-auto-labs. GitHub Pages currently lists `https://business-auto-labs.github.io/business-auto-labs/` as the public address. The canonical, social, sitemap, robots, structured-data, and authentication redirect settings use that address. A successful Pages build is required to confirm a deployment.
+The repository is Business-Auto-Labs/business-auto-labs. The configured public domain is `https://businessautomationlabs.com/`, and the root `CNAME` file names `businessautomationlabs.com`. The homepage canonical, social metadata, sitemap, robots sitemap reference, structured-data URL, and browser authentication redirect base use this domain. Check repository Settings → Pages and the latest Pages workflow to confirm DNS, HTTPS, and deployment status.
 
 1. Save and review changes in VS Code.
 2. From the project folder, run git status and git diff. Then stage and commit the intended files with a clear message.
@@ -18,25 +18,25 @@ Do not commit private keys, passwords, real client records, or private project f
 
 ## Supabase login setup
 
-The public Client login link stays hidden while js/auth-config.js has blank Supabase settings. Follow SECURITY_AUTH.md before enabling accounts. If you add a custom domain, update the Supabase Site URL and allowed redirects, siteBaseUrl in js/auth-config.js, canonical and Open Graph URLs, structured-data URL, robots.txt, and sitemap.xml.
+The public Client login link stays hidden while js/auth-config.js has blank Supabase settings. Follow SECURITY_AUTH.md before enabling accounts. If the domain changes, update the Supabase Site URL and allowed redirects, siteBaseUrl in js/auth-config.js, canonical and Open Graph URLs, structured-data URL, robots.txt, and sitemap.xml together.
 
-## Connect businessautomationlabs.com to GitHub Pages
+## Verify the custom domain on GitHub Pages
 
-The domain is purchased, but it has not been connected to the Pages site yet. The site's public canonical, social, sitemap, robots, and authentication redirect URLs therefore still use the GitHub Pages address. Switch these only after the custom domain and HTTPS have been verified.
+The repository is configured to use businessautomationlabs.com. The following steps help verify or repair GitHub and Namecheap settings if the domain or HTTPS check fails. Keep the site URLs on the custom HTTPS domain once the domain is resolving correctly.
 
 ### 1. Verify domain ownership with GitHub
 
-GitHub recommends verifying the domain before assigning it to the repository. In GitHub, open your profile **Settings → Code and automation → Pages → Add a domain**. Enter `businessautomationlabs.com`. GitHub will show a unique TXT record name and value. In Namecheap, open **Domain List → Manage → Advanced DNS → Host Records**, add the TXT record exactly as GitHub shows it, then return to GitHub and complete verification. If Namecheap does not let you edit host records, check which nameservers the domain uses and add the TXT record at that DNS provider instead. Keep the TXT record in DNS so the verification stays in place.
+Check that GitHub has verified ownership of `businessautomationlabs.com`. If verification is missing, open **Settings → Code and automation → Pages → Add a domain**, copy the TXT hostname and value GitHub provides, add that exact record at the active DNS provider, and verify again. Keep the TXT record in DNS.
 
-### 2. Add the domain to the repository
+### 2. Confirm the domain on the repository
 
-Open the `Business-Auto-Labs/business-auto-labs` repository and choose **Settings → Pages**. Under **Custom domain**, enter `businessautomationlabs.com` and save. For branch-based Pages publishing, GitHub adds a `CNAME` file at the publishing branch root. A custom GitHub Actions workflow does not need that file. If GitHub creates a commit, pull that change before making a later push from your local checkout.
+Open the `Business-Auto-Labs/business-auto-labs` repository and choose **Settings → Pages**. Confirm that **Custom domain** is `businessautomationlabs.com`. For branch-based Pages publishing, the root `CNAME` file should contain that domain. A custom GitHub Actions workflow does not need the file.
 
 ### 3. Point Namecheap DNS to GitHub Pages
 
 In Namecheap, open **Domain List → Manage → Advanced DNS**. Host records are editable there when the domain uses Namecheap BasicDNS, PremiumDNS, or FreeDNS. If the domain uses other nameservers, make the records at the DNS provider those nameservers belong to.
 
-Add these records:
+Confirm these records are present at the active DNS provider:
 
 | Type | Host | Value |
 | --- | --- | --- |
@@ -52,19 +52,19 @@ The `www` value is the GitHub organization domain only; do not append `/business
 
 DNS changes can take up to 24 hours to propagate. Return to **Repository Settings → Pages** and wait for GitHub's DNS check and certificate provisioning to finish. When the option is available, turn on **Enforce HTTPS**. Test both `https://businessautomationlabs.com` and `https://www.businessautomationlabs.com`; the final URL should resolve securely and the latter should redirect to the apex address.
 
-### 5. Switch the site's public URLs and publish
+### 5. Keep the site URLs aligned and publish
 
-After the domain resolves over HTTPS, update all references together before publishing the final custom-domain version:
+The site source now targets `https://businessautomationlabs.com/`. Keep these values aligned in future edits:
 
 - `index.html`: canonical URL, Open Graph URL/image URL, and structured-data URL.
-- `robots.txt` and `sitemap.xml`: use the new HTTPS domain.
+- `robots.txt` and `sitemap.xml`: keep using `https://businessautomationlabs.com/`.
 - `js/auth-config.js` and Supabase allowed redirect URLs: update only if authentication is configured.
 - `README.md` and this deployment guide: describe the active domain accurately.
 
-Review the changed files in VS Code, commit the intended website changes, and push them to the `main` branch using the existing GitHub workflow. Open the custom domain after the Pages deployment succeeds and check that the CSS, images, contact links, and navigation load correctly. Do not remove the old GitHub Pages URL from use until the new domain passes these checks.
+Review the changed files, then publish through the existing GitHub workflow when ready. After the Pages workflow succeeds, open the custom domain and check that the CSS, images, contact links, and navigation load correctly. This source change alone does not confirm a deployment.
 
 ### 6. Request Google Search discovery
 
-Once the custom domain is live, add a **Domain property** for `businessautomationlabs.com` in Google Search Console, verify it using the TXT record Google provides, and submit `https://businessautomationlabs.com/sitemap.xml`. Use URL Inspection to request a crawl. Google controls crawling and indexing; setup and sitemap submission do not guarantee that the site will appear in search.
+The **Domain property** for `businessautomationlabs.com` is verified in Google Search Console using its TXT record in Namecheap. Keep that record in DNS. After publishing, confirm the live sitemap lists the custom-domain homepage, then submit `https://businessautomationlabs.com/sitemap.xml` and use URL Inspection to check the homepage. Google controls crawling and indexing; setup and sitemap submission do not guarantee that the site will appear in search.
 
 Official instructions: [GitHub custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-your-custom-domain-for-your-github-pages-site), [GitHub domain verification](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages), [GitHub HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https), [Namecheap host records](https://www.namecheap.com/support/knowledgebase/article.aspx/434/2237/how-do-i-set-up-host-records-for-a-domain/), and [Google Search Console](https://developers.google.com/search/docs/monitor-debug/search-console-start).

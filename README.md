@@ -50,6 +50,10 @@ The four service-card previews use hand-authored HTML and CSS: a WhatsApp conver
 
 The larger WhatsApp workflow demo is a vanilla JavaScript simulation. A visitor selects a fictional business and starts the conversation. Reduced-motion settings remove movement, and the conversation remains readable as ordinary page content.
 
+## Website launch checklist
+
+For a reusable checklist and future site-audit prompt inputs, see [docs/WEBSITE_LAUNCH_CHECKLIST.md](docs/WEBSITE_LAUNCH_CHECKLIST.md).
+
 ## Publish
 
-The current SEO metadata points to the GitHub Pages URL `https://business-auto-labs.github.io/business-auto-labs/`. The purchased custom domain, businessautomationlabs.com, is not connected to Pages yet. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) if you choose to connect it later. Local edits do not confirm a live deployment, and a sitemap does not guarantee indexing.
+The site is configured to use `https://businessautomationlabs.com/`; the root `CNAME` file names this domain. The homepage canonical, social metadata, structured-data URL, authentication redirect base, robots sitemap reference, and sitemap use the custom domain. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) to check GitHub Pages DNS, HTTPS, and deployment status. Local edits do not confirm a live deployment, and sitemap submission does not guarantee indexing.

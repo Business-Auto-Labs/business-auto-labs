@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://business-auto-labs.github.io/business-auto-labs/sitemap.xml
+Sitemap: https://businessautomationlabs.com/sitemap.xml
