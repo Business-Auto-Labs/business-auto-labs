@@ -4,6 +4,7 @@
 (() => {
   const dialog = document.querySelector("[data-contact-dialog]");
   if (!dialog || typeof dialog.showModal !== "function") return;
+  const siteConfig = window.BUSINESS_SITE_CONFIG || {};
 
   const title = dialog.querySelector("[data-contact-dialog-title]");
   const description = dialog.querySelector("[data-contact-dialog-description]");
@@ -91,10 +92,26 @@
     }
 
     if (type === "phone") {
-      title.textContent = "Call Business Automation Labs";
-      description.textContent = "Open your phone app to call this number, or copy the number.";
-      const firstAction = makeAction("Call " + value, "contact-option--primary", "tel:" + value);
-      makeCopyAction(value, "Copy phone number");
+      const contact = siteConfig.phoneContacts?.[trigger.dataset.contactId];
+      const name = contact?.name || trigger.dataset.contactId || "this contact";
+      const cleanNumber = value.replace(/[^\d+]/g, "");
+      title.textContent = "Contact " + name;
+      description.textContent = "Choose how you’d like to reach " + name + ".";
+      const firstAction = makeAction("Call " + name, "contact-option--primary", "tel:" + cleanNumber);
+      makeCopyAction(cleanNumber, "Copy " + name + "’s number");
+
+      const waNumber = contact?.whatsappNumber || "";
+      const waDigits = waNumber.replace(/\D/g, "");
+      const phoneDigits = cleanNumber.replace(/\D/g, "");
+      const waReady = contact?.whatsappConfirmed === true
+        && /^\+[1-9]\d{7,14}$/.test(waNumber)
+        && waDigits === phoneDigits;
+      if (waReady) {
+        const whatsappUrl = new URL("https://wa.me/" + waDigits);
+        if (contact.message) whatsappUrl.searchParams.set("text", contact.message);
+        makeAction("Message " + name + " on WhatsApp", "", whatsappUrl.toString(), true);
+      }
+
       dialog.showModal();
       firstAction.focus();
     }

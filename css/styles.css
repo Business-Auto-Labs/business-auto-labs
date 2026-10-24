@@ -377,6 +377,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
 .workflow-tab.is-active { border-color: rgba(33, 78, 62, .24); background: var(--white); color: var(--green-deep); }
 .workflow-panel { padding: 20px; }
 .workflow-main { display: grid; grid-template-columns: 1.08fr .92fr; gap: 18px; }
+.workflow-showcase { min-width: 0; display: flex; flex-direction: column; }
 .chat-simulator {
   min-width: 0;
   min-height: 455px;
@@ -389,6 +390,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
     radial-gradient(ellipse at 83% 2%, rgba(209, 189, 148, .16), transparent 36%),
     linear-gradient(145deg, #1e352a, #15261e 78%);
   color: #f5f3eb;
+  scroll-margin-top: 100px;
 }
 .chat-simulator__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 13px; border-bottom: 1px solid rgba(255,255,255,.14); }
 .chat-simulator__header .chat-brand { overflow-wrap: anywhere; }
@@ -491,15 +493,36 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
 .workflow-progress li.is-complete { color: var(--green); }
 .workflow-progress li.is-complete > span { border-color: rgba(33,78,62,.3); background: #e3eadf; }
 .workflow-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 15px 20px;
-  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 12px;
+  padding: 15px 2px 2px;
 }
-.workflow-status { margin: 0; color: var(--muted); font-size: 14px; }
-.workflow-controls__buttons { display: flex; flex: 0 0 auto; gap: 8px; }
+.workflow-controls__intro { display: grid; gap: 4px; }
+.workflow-controls__eyebrow { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--green); font-size: 11px; font-weight: 750; letter-spacing: .11em; }
+.workflow-controls__eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: #86a978; box-shadow: 0 0 0 4px rgba(134,169,120,.16); animation: workflow-live-pulse 2.2s ease-in-out infinite; }
+.workflow-status { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.workflow-controls__buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.button--workflow {
+  width: 100%;
+  min-height: 68px;
+  justify-content: flex-start;
+  gap: 13px;
+  padding: 11px 16px;
+  border: 1px solid rgba(209,189,148,.76);
+  border-radius: 5px;
+  background: linear-gradient(118deg, #214e3e 0%, #17392c 58%, #122d23 100%);
+  color: #fffdf5;
+  box-shadow: 0 8px 18px rgba(26,58,44,.16), inset 0 1px rgba(255,255,255,.12);
+  animation: workflow-cta-glow 3.2s ease-in-out infinite;
+}
+.button--workflow:hover { background: linear-gradient(118deg, #2c604c, #1a4031 60%, #163629); box-shadow: 0 11px 24px rgba(26,58,44,.24), inset 0 1px rgba(255,255,255,.16); }
+.workflow-play__icon { width: 38px; height: 38px; display: grid; place-items: center; flex: 0 0 auto; padding-left: 2px; border-radius: 50%; background: var(--gold-soft); color: var(--green-deep) !important; font-size: 15px; box-shadow: 0 2px 9px rgba(8,22,15,.23); }
+.workflow-play__label { flex: 1; text-align: left; font-size: 17px; font-weight: 700; letter-spacing: .005em; }
+.workflow-play__arrow { color: var(--gold-soft) !important; font-size: 18px; }
+.workflow-controls__buttons .button--quiet { min-height: 40px; padding: 7px 3px; border: 0; font-size: 14px; }
+.workflow-controls__buttons .button--quiet:hover { background: transparent; color: var(--green); transform: none; }
+@keyframes workflow-live-pulse { 50% { box-shadow: 0 0 0 7px rgba(134,169,120,.08); opacity: .7; } }
+@keyframes workflow-cta-glow { 0%, 100% { box-shadow: 0 8px 18px rgba(26,58,44,.16), inset 0 1px rgba(255,255,255,.12); } 50% { box-shadow: 0 10px 23px rgba(26,58,44,.25), inset 0 1px rgba(255,255,255,.16); } }
 .workflow-disclaimer { margin: 11px 2px 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 
 .process-section { background: #e7e8df; }
@@ -578,8 +601,24 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
 }
 .contact-email { gap: 12px; font: 500 21px var(--serif); }
 .contact-email span { color: var(--gold); font: 15px var(--sans); }
-.contact-phones { display: flex; flex-wrap: wrap; gap: 18px; margin: 8px 0 0; }
-.contact-phones a { font-size: 16px; }
+.contact-phones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 10px 0 0; }
+.contact-phones a {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 2px 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.36);
+  text-decoration: none;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.contact-phones a:hover { border-color: rgba(33,78,62,.4); background: var(--white); transform: translateY(-2px); }
+.contact-phone__name { color: var(--green-deep); font-size: 16px; font-weight: 700; }
+.contact-phone__number { color: var(--muted); font-size: 14px; letter-spacing: .02em; }
+.contact-phone__arrow { grid-column: 2; grid-row: 1 / span 2; color: var(--gold); font-size: 17px; }
 .contact-note { margin: 9px 0 0; color: var(--muted); font-size: 13px; }
 .button--whatsapp { margin-top: 17px; background: #276b4e; color: white; }
 .button--whatsapp:hover { background: var(--green-deep); }
@@ -738,13 +777,15 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
   .workflow-tab { flex: 0 0 auto; padding-inline: 12px; font-size: 14px; }
   .workflow-panel { padding: 10px; }
   .workflow-main { grid-template-columns: 1fr; gap: 10px; }
-  .chat-simulator { min-height: 400px; scroll-margin-top: 8px; }
+  .chat-simulator { min-height: 400px; scroll-margin-top: 105px; }
   .chat-transcript { min-height: 270px; max-height: 340px; }
   .workflow-summary { padding: 17px; }
   .workflow-progress { margin-top: 12px; }
-  .workflow-controls { align-items: flex-start; flex-direction: column; gap: 12px; padding: 13px; }
-  .workflow-controls__buttons { width: 100%; flex-wrap: wrap; }
-  .workflow-controls__buttons .button { flex: 1 1 155px; }
+  .workflow-controls { gap: 11px; padding: 13px 2px 2px; }
+  .workflow-controls__buttons { width: 100%; align-items: stretch; flex-direction: column; gap: 2px; }
+  .button--workflow { min-height: 64px; }
+  .workflow-controls__buttons .button--quiet { align-self: flex-start; }
+  .workflow-summary { margin-top: 2px; }
   .workflow-disclaimer { font-size: 13px; }
   .process-section__inner { padding-block: 50px; }
   .process-grid { grid-template-columns: 1fr; }
@@ -757,6 +798,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
   .faq-list summary { font-size: 17px; }
   .contact-section__inner { grid-template-columns: 1fr; gap: 18px; padding-block: 50px; }
   .contact-email { font-size: clamp(18px, 5vw, 21px); }
+  .contact-phones { grid-template-columns: 1fr; gap: 8px; }
   .site-footer { grid-template-columns: 1fr auto; gap: 13px; }
   .site-footer__note { display: none; }
   .site-footer__top { grid-column: 2; grid-row: 1; }
@@ -772,6 +814,8 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
   .chat-simulator__header [data-business-name] { font-size: 11px; }
   .chat-online { font-size: 9px; }
   .workflow-controls__buttons .button { min-height: 46px; }
+  .workflow-controls__buttons .button--workflow { min-height: 62px; }
+  .workflow-play__label { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -781,6 +825,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
     transition-duration: .01ms !important;
   }
   .service-motion *, .service-motion *::before, .service-motion *::after { animation: none !important; }
+  .workflow-controls__eyebrow i, .button--workflow { animation: none !important; }
   .brand__logo, .brand:hover .brand__logo, .brand:active .brand__logo { transform: none; transition: none; filter: none; }
 }
 

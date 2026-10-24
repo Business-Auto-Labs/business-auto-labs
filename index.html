@@ -173,16 +173,33 @@
 
           <div class="workflow-panel" id="workflow-panel" role="tabpanel" aria-labelledby="tab-retail" tabindex="0">
             <div class="workflow-main">
-              <div class="chat-simulator" aria-label="Illustrative chatbot conversation">
-                <div class="chat-simulator__header">
-                  <div class="chat-brand"><span class="chat-brand__mark" aria-hidden="true">BA</span><span data-business-name>FICTIONAL EXAMPLE SHOP</span></div>
-                  <span class="chat-online"><i aria-hidden="true"></i> SAMPLE FLOW</span>
+              <div class="workflow-showcase">
+                <div class="chat-simulator" id="workflow-animation" aria-label="Illustrative chatbot conversation">
+                  <div class="chat-simulator__header">
+                    <div class="chat-brand"><span class="chat-brand__mark" aria-hidden="true">BA</span><span data-business-name>FICTIONAL EXAMPLE SHOP</span></div>
+                    <span class="chat-online"><i aria-hidden="true"></i> SAMPLE FLOW</span>
+                  </div>
+                  <div class="chat-transcript" data-chat-transcript aria-label="Conversation transcript">
+                    <article class="chat-bubble chat-bubble--customer"><span class="chat-bubble__speaker">Customer</span><p>Hi</p></article>
+                  </div>
+                  <div class="typing-indicator" data-typing-indicator hidden aria-hidden="true"><span></span><span></span><span></span></div>
+                  <p class="chat-simulator__foot">Illustrative conversation · fictional business</p>
                 </div>
-                <div class="chat-transcript" data-chat-transcript aria-label="Conversation transcript">
-                  <article class="chat-bubble chat-bubble--customer"><span class="chat-bubble__speaker">Customer</span><p>Hi</p></article>
+
+                <div class="workflow-controls">
+                  <div class="workflow-controls__intro">
+                    <p class="workflow-controls__eyebrow"><i aria-hidden="true"></i> A CUSTOMER JOURNEY · 4 CLEAR STEPS</p>
+                    <p class="workflow-status" data-workflow-status aria-live="polite">Choose a business, then watch its chatbot guide a customer step by step.</p>
+                  </div>
+                  <div class="workflow-controls__buttons">
+                    <button class="button button--workflow" type="button" data-play-workflow aria-pressed="false">
+                      <span class="workflow-play__icon" data-play-icon aria-hidden="true">▶</span>
+                      <span class="workflow-play__label" data-play-label>See a WhatsApp flow in action</span>
+                      <span class="workflow-play__arrow" aria-hidden="true">↗</span>
+                    </button>
+                    <button class="button button--quiet" type="button" data-replay-workflow>Start over <span aria-hidden="true">↺</span></button>
+                  </div>
                 </div>
-                <div class="typing-indicator" data-typing-indicator hidden aria-hidden="true"><span></span><span></span><span></span></div>
-                <p class="chat-simulator__foot">Illustrative conversation · fictional business</p>
               </div>
 
               <aside class="workflow-summary" aria-label="Business action and workflow progress">
@@ -201,14 +218,6 @@
                   <li data-progress-step="3"><span>04</span> Customer decides</li>
                 </ol>
               </aside>
-            </div>
-
-            <div class="workflow-controls">
-              <p class="workflow-status" data-workflow-status aria-live="polite">A customer has sent “Hi”. Play the example to see the conversation unfold.</p>
-              <div class="workflow-controls__buttons">
-                <button class="button button--dark" type="button" data-play-workflow>Play this workflow <span aria-hidden="true">▶</span></button>
-                <button class="button button--quiet" type="button" data-replay-workflow>Start over <span aria-hidden="true">↺</span></button>
-              </div>
             </div>
           </div>
           <p class="workflow-disclaimer">All business names and conversations in this demo are fictional. Actual chatbot steps depend on each business’s information, consent practices, and order or booking setup.</p>
@@ -273,11 +282,11 @@
         <div class="contact-copy" data-reveal>
           <p>Tell us your goal—automating customer chats, building a website, designing brand graphics, or creating social and paid campaign content.</p>
           <a class="contact-email" data-contact-email data-contact-type="email" href="mailto:businessautolabs@gmail.com">businessautolabs@gmail.com <span aria-hidden="true">↗</span></a>
-          <p class="contact-phones">
-            <a data-contact-type="phone" href="tel:7828811571">7828811571</a>
-            <a data-contact-type="phone" href="tel:8591897995">8591897995</a>
+          <p class="contact-phones" aria-label="Call or message our founders">
+            <a data-contact-type="phone" data-contact-id="dhruv" href="tel:+917828811571"><span class="contact-phone__name">Dhruv</span><span class="contact-phone__number">+91 78288 11571</span><span class="contact-phone__arrow" aria-hidden="true">↗</span></a>
+            <a data-contact-type="phone" data-contact-id="neel" href="tel:+918591897995"><span class="contact-phone__name">Neil</span><span class="contact-phone__number">+91 85918 97995</span><span class="contact-phone__arrow" aria-hidden="true">↗</span></a>
           </p>
-          <p class="contact-note">Choose Gmail or your phone app, or copy the contact detail.</p>
+          <p class="contact-note">Choose a founder to call, copy their number, or message them on WhatsApp.</p>
           <a class="button button--whatsapp" data-whatsapp-link hidden target="_blank" rel="noopener noreferrer">Message us on WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
       </div>

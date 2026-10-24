@@ -206,18 +206,29 @@
   const status = demo.querySelector("[data-workflow-status]");
   const progressSteps = Array.from(demo.querySelectorAll("[data-progress-step]"));
   const playButton = demo.querySelector("[data-play-workflow]");
+  const playLabel = demo.querySelector("[data-play-label]");
+  const playIcon = demo.querySelector("[data-play-icon]");
   const replayButton = demo.querySelector("[data-replay-workflow]");
 
-  if (!panel || !transcript || !playButton || !replayButton) return;
+  if (!panel || !transcript || !playButton || !playLabel || !playIcon || !replayButton) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let activeWorkflowName = "retail";
   let activeStepIndex = 0;
+  let activeMessageIndex = 0;
+  let activeStepStarted = false;
   let playing = false;
   let playbackToken = 0;
 
   function wait(milliseconds) {
-    return new Promise((resolve) => window.setTimeout(resolve, reducedMotion.matches ? 0 : milliseconds));
+    // Keep enough reading time even when reduced motion is enabled; that
+    // preference disables visual movement, not the time needed to read text.
+    return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+  }
+
+  function setPlayLabel(label, icon = "▶") {
+    playLabel.textContent = label;
+    playIcon.textContent = icon;
   }
 
   function makeMessage(message) {
@@ -265,7 +276,10 @@
       transcript.append(linkCard);
     }
 
-    transcript.scrollTop = transcript.scrollHeight;
+    transcript.scrollTo({
+      top: transcript.scrollHeight,
+      behavior: reducedMotion.matches ? "auto" : "smooth"
+    });
   }
 
   function updateProgress(stepIndex) {
@@ -288,14 +302,22 @@
   function setPlayingState(isPlaying) {
     playing = isPlaying;
     playButton.setAttribute("aria-pressed", String(isPlaying));
-    playButton.querySelector("span").textContent = isPlaying ? "Ⅱ" : "▶";
-    playButton.firstChild.textContent = isPlaying ? "Pause animation " : "Play this workflow ";
+    playIcon.textContent = isPlaying ? "Ⅱ" : "▶";
+  }
+
+  function readingTime(message) {
+    const wordCount = message.text.trim().split(/\s+/).length;
+    const choiceCount = message.choices?.length || 0;
+    const minimum = message.speaker === "AI chatbot" ? 2600 : 850;
+    return Math.min(5200, Math.max(minimum, wordCount * 170 + choiceCount * 400));
   }
 
   function resetWorkflow() {
     playbackToken += 1;
     setPlayingState(false);
     activeStepIndex = 1;
+    activeMessageIndex = 0;
+    activeStepStarted = false;
     typingIndicator.hidden = true;
 
     const workflow = workflows[activeWorkflowName];
@@ -310,7 +332,7 @@
     showStep(0);
 
     status.textContent = "A customer has sent “Hi”. The chatbot greeting and choices are on screen. Play to follow the example.";
-    playButton.firstChild.textContent = "Continue example ";
+    setPlayLabel("See a WhatsApp flow in action");
   }
 
   function revealAnimation() {
@@ -322,16 +344,15 @@
   }
 
   async function runWorkflow() {
+    revealAnimation();
     if (playing) {
       playbackToken += 1;
       setPlayingState(false);
       typingIndicator.hidden = true;
-      playButton.firstChild.textContent = "Resume example ";
-      status.textContent = "Paused. Continue to see the next part of this example.";
+      setPlayLabel("Resume the walkthrough", "▶");
+      status.textContent = "Paused. Resume when you’re ready to see the next message.";
       return;
     }
-
-    revealAnimation();
 
     const workflow = workflows[activeWorkflowName];
     if (activeStepIndex >= workflow.steps.length) {
@@ -340,28 +361,41 @@
 
     const token = ++playbackToken;
     setPlayingState(true);
+    setPlayLabel("Pause the walkthrough", "Ⅱ");
 
     while (activeStepIndex < workflow.steps.length) {
-      const stepIndex = activeStepIndex;
-      const step = workflow.steps[stepIndex];
-      showStep(stepIndex);
-      status.textContent = "Step " + (stepIndex + 1) + " of " + workflow.steps.length + ": " + step.title + ".";
+      const step = workflow.steps[activeStepIndex];
+      if (!activeStepStarted) {
+        showStep(activeStepIndex);
+        status.textContent = "Step " + (activeStepIndex + 1) + " of " + workflow.steps.length + ": " + step.title + ".";
+        activeStepStarted = true;
+        await wait(450);
+        if (token !== playbackToken) return;
+      }
 
-      typingIndicator.hidden = false;
-      await wait(500);
-      if (token !== playbackToken) return;
+      while (activeMessageIndex < step.messages.length) {
+        const message = step.messages[activeMessageIndex];
+        if (message.speaker === "AI chatbot") {
+          typingIndicator.hidden = false;
+          await wait(950);
+          if (token !== playbackToken) return;
+          typingIndicator.hidden = true;
+        }
 
-      typingIndicator.hidden = true;
-      step.messages.forEach(makeMessage);
+        makeMessage(message);
+        activeMessageIndex += 1;
+        await wait(readingTime(message));
+        if (token !== playbackToken) return;
+      }
+
       activeStepIndex += 1;
-
-      await wait(650);
-      if (token !== playbackToken) return;
+      activeMessageIndex = 0;
+      activeStepStarted = false;
     }
 
     setPlayingState(false);
     updateProgress(workflow.steps.length);
-    playButton.firstChild.textContent = "Replay example ";
+    setPlayLabel("Replay the flow");
     status.textContent = "Example complete. The customer reaches the business’s normal order or booking process; no sale or booking is guaranteed.";
   }
 
