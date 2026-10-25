@@ -2,8 +2,8 @@
 // confirmed by the owner for both named founder contacts.
 window.BUSINESS_SITE_CONFIG = {
   contactEmail: "businessautolabs@gmail.com",
-  whatsappNumber: "",
-  whatsappNumberConfirmed: false,
+  whatsappNumber: "+917828811571",
+  whatsappNumberConfirmed: true,
   phoneContacts: {
     dhruv: {
       name: "Dhruv",

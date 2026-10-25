@@ -1,0 +1,7 @@
+# Local-only working notes and credentials/configuration
+.claude/
+/memory/
+/*.tmp.txt
+
+# Private case-study worksheet; do not publish with GitHub Pages
+/docs/CASE_STUDY_WORKSHEET.md

@@ -262,7 +262,13 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
 .hero-chat__handoff span { margin-right: 7px; color: var(--gold-soft); }
 .hero-visual-note { position: absolute; right: 2%; bottom: 1%; margin: 0; color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
 
-.focus-strip { background: var(--green-deep); color: #f0eee5; }
+.focus-strip {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(135deg, #f0ede3, #eae6db 50%, #e0dccf);
+  color: var(--ink-soft);
+  box-shadow: inset 0 1px rgba(255,255,255,.1), inset 0 -1px rgba(29,37,33,.05);
+}
 .focus-strip__inner {
   min-height: 50px;
   display: flex;
@@ -283,13 +289,24 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
 
 .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .service-card {
+  position: relative;
   min-height: 245px;
   padding: 18px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, .3);
-  transition: transform .23s var(--ease), background .23s, border-color .23s;
+  background: rgba(255, 255, 255, .35);
+  transition: transform .25s var(--ease), background .25s, border-color .25s, box-shadow .25s;
 }
-.service-card:hover { transform: translateY(-3px); border-color: rgba(33, 78, 62, .35); background: var(--white); }
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  opacity: 0;
+  transition: opacity .25s var(--ease);
+}
+.service-card:hover { transform: translateY(-4px); border-color: rgba(33, 78, 62, .35); background: var(--white); box-shadow: 0 14px 32px rgba(29,37,33,.08); }
+.service-card:hover::after { opacity: 1; }
 .service-card__number { display: block; color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .07em; }
 .service-motion {
   height: 124px;
@@ -513,7 +530,7 @@ h1 em, h2 em { color: var(--green); font-style: normal; font-weight: 500; }
   background: linear-gradient(118deg, #214e3e 0%, #17392c 58%, #122d23 100%);
   color: #fffdf5;
   box-shadow: 0 8px 18px rgba(26,58,44,.16), inset 0 1px rgba(255,255,255,.12);
-  animation: workflow-cta-glow 3.2s ease-in-out infinite;
+  animation: workflow-cta-glow 2.8s ease-in-out infinite;
 }
 .button--workflow:hover { background: linear-gradient(118deg, #2c604c, #1a4031 60%, #163629); box-shadow: 0 11px 24px rgba(26,58,44,.24), inset 0 1px rgba(255,255,255,.16); }
 .workflow-play__icon { width: 38px; height: 38px; display: grid; place-items: center; flex: 0 0 auto; padding-left: 2px; border-radius: 50%; background: var(--gold-soft); color: var(--green-deep) !important; font-size: 15px; box-shadow: 0 2px 9px rgba(8,22,15,.23); }

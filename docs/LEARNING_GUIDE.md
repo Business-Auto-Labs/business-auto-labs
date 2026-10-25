@@ -24,7 +24,7 @@ Open js/workflow-demo.js and find the workflows object. Change a fictional chatb
 
 ## Checkpoint 6: Add a real project
 
-Update the portfolio note only with a real, approved project. Include the context, the team's exact role, what was built, approved media, and a verified outcome. Do not invent a client, metric, testimonial, or certification. Checkpoint: a new visitor can tell what is factual and what is illustrative. Use [CASE_STUDY_WORKSHEET.md](CASE_STUDY_WORKSHEET.md) to collect details and written permission first.
+Update the portfolio note only with a real, approved project. Include the context, the team's exact role, what was built, approved media, and a verified outcome. Do not invent a client, metric, testimonial, or certification. Checkpoint: a new visitor can tell what is factual and what is illustrative. Keep the case-study worksheet in private storage while collecting details and written permission.
 
 ## Checkpoint 7: Try contact actions
 
