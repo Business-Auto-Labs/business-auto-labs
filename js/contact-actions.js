@@ -2,8 +2,62 @@
 // When JavaScript is available, a small dialog offers the matching app action
 // and a copy option. The visitor always chooses before an app is opened.
 (() => {
-  const dialog = document.querySelector("[data-contact-dialog]");
-  if (!dialog || typeof dialog.showModal !== "function") return;
+  function createContactDialog() {
+    const dialog = document.createElement("dialog");
+    dialog.className = "contact-dialog";
+    dialog.setAttribute("data-contact-dialog", "");
+    dialog.setAttribute("aria-labelledby", "contact-dialog-title");
+    dialog.setAttribute("aria-describedby", "contact-dialog-description");
+
+    const closeForm = document.createElement("form");
+    closeForm.method = "dialog";
+    closeForm.className = "contact-dialog__close-form";
+    const closeButton = document.createElement("button");
+    closeButton.type = "submit";
+    closeButton.className = "contact-dialog__close";
+    closeButton.setAttribute("aria-label", "Close contact options");
+    closeButton.textContent = "×";
+    closeForm.append(closeButton);
+
+    const kicker = document.createElement("p");
+    kicker.className = "eyebrow";
+    kicker.textContent = "CONTACT OPTIONS";
+    const title = document.createElement("h2");
+    title.id = "contact-dialog-title";
+    title.setAttribute("data-contact-dialog-title", "");
+    title.textContent = "Choose how to contact us";
+    const description = document.createElement("p");
+    description.id = "contact-dialog-description";
+    description.className = "contact-dialog__description";
+    description.setAttribute("data-contact-dialog-description", "");
+    const actions = document.createElement("div");
+    actions.className = "contact-dialog__actions";
+    actions.setAttribute("data-contact-dialog-actions", "");
+
+    const fallback = document.createElement("label");
+    fallback.className = "contact-copy-fallback";
+    fallback.setAttribute("data-contact-copy-fallback", "");
+    fallback.hidden = true;
+    fallback.append(document.createTextNode("Contact detail"));
+    const fallbackInput = document.createElement("input");
+    fallbackInput.type = "text";
+    fallbackInput.readOnly = true;
+    fallbackInput.setAttribute("data-contact-copy-value", "");
+    fallback.append(fallbackInput);
+
+    const status = document.createElement("p");
+    status.className = "contact-dialog__status";
+    status.setAttribute("data-contact-dialog-status", "");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+
+    dialog.append(closeForm, kicker, title, description, actions, fallback, status);
+    document.body.append(dialog);
+    return dialog;
+  }
+
+  const dialog = createContactDialog();
+  if (typeof dialog.showModal !== "function") return;
   const siteConfig = window.BUSINESS_SITE_CONFIG || {};
 
   const title = dialog.querySelector("[data-contact-dialog-title]");

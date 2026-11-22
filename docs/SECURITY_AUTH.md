@@ -1,33 +1,51 @@
-# Login and data security
+# Authentication and data security
 
-## Current state
+## Current state — not live
 
-The marketing website works on GitHub Pages. The login page is an integration scaffold, not a live authentication system: js/auth-config.js has empty values, no users have been invited, and the portal contains only a public placeholder. Do not place private documents or client records in this repository.
+The website is a public static GitHub Pages site. The redesigned sign-in page shows Google and WhatsApp options, but both controls are disabled. js/auth-config.js has a blank Supabase URL and publishable key, with Google and WhatsApp flags set to false. No public navigation link exposes the sign-in page. The portal route is a public placeholder with no private records; noindex and JavaScript redirects are not access controls.
 
-GitHub Pages serves static files publicly. A password form, client-side redirect, noindex tag, or robots.txt rule does not stop someone from opening a static file directly. Do not treat this scaffold as a protected client portal until an identity provider is configured and private data is enforced by a backend.
+The sign-in code is a gated integration scaffold. It does not collect or store passwords. A future Google flow uses Supabase OAuth with an account-selection prompt. A future WhatsApp flow requests a one-time code for an already-created account and asks for a nickname after the identity is verified. The nickname is display metadata only; never use it for authorization. These flows have not been connected to a provider or verified against a live project.
 
-## Why the website does not keep passwords
+## Static hosting boundary
 
-Use an identity provider such as Supabase Auth. Its Auth service stores credentials as salted password hashes and checks them on its servers over HTTPS. The account email is the login name. Do not create a public table for passwords, do not log them, and never commit them.
+GitHub Pages serves every committed HTML, CSS, JavaScript, and asset file publicly. A private-looking URL, client-side session check, noindex tag, robots rule, or hidden link cannot protect a static document. Never commit client records, credentials, private reports, or tokens. A Supabase publishable key is intended to appear in browser code, but it is safe only when database and storage policies are correct. A service-role or secret key must never reach the browser.
 
-The only browser key allowed here is the project's publishable key (or legacy anon key). It is designed to be visible and is safe only when database access rules are correct. A service-role or secret key bypasses those rules and must stay server-side.
+A browser-managed Supabase session can support public UI and RLS-protected API calls, but it is not the right boundary for highly sensitive client records. Move a private portal to a server-backed application with server-validated sessions and appropriate secure, HttpOnly cookies before placing confidential files or records there.
 
-## Configure Supabase before inviting users
+## Requirements before turning on sign-in
 
-1. Create a Supabase project and enable email/password authentication.
-2. In js/auth-config.js, set supabaseUrl and publishableKey. These values are public configuration; never paste a secret key.
-3. In Supabase Authentication URL settings, use the site URL https://businessautomationlabs.com and allow the exact redirect https://businessautomationlabs.com/login.html?mode=recovery. Add localhost redirects only for development. These settings are for later setup; the current Supabase configuration is blank and sign-in is inactive.
-4. Disable public sign-ups and anonymous sign-ins. Invite only known users from the Supabase dashboard, and require email confirmation.
-5. Configure a minimum password length of at least 12 characters. Require MFA for administrators. Keep recovery tied to a verified email.
-6. Review the project's current Auth rate limits. Supabase documents endpoint-specific per-IP limits; its token endpoint currently allows 150 requests per five-minute window by default, with bursts, while several signup, recovery, and email endpoints have separate 30-request defaults. Confirm the current settings and tune them for the project. These limits slow automated guessing but do not make brute force impossible and are not a permanent per-account lockout.
-7. Consider enabling a CAPTCHA provider supported by Supabase Auth, such as hCaptcha or Cloudflare Turnstile. This page does not include the CAPTCHA widget/token yet, so do not turn provider-side CAPTCHA on until the matching browser component is added and verified.
-8. Before adding any data, enable RLS on every table and storage bucket. Write policies that check the signed-in user and their role or tenant for every operation. Test with a normal user, not only a project administrator.
-9. Publish a privacy notice that explains what account and contact data is collected before inviting clients.
+1. Create the Supabase project and configure the exact public site URL and exact redirect allowlist. Do not allow broad wildcard redirects.
+2. Decide who is allowed to sign in. Disable public account creation unless an approved invite process is implemented. The WhatsApp code uses shouldCreateUser=false; Google OAuth still requires a server-side signup restriction or a before-user-created allowlist hook. Hiding buttons or checking the browser cannot enforce invitations.
+3. Configure Google OAuth in the Supabase provider settings. Store the Google OAuth client secret only in Supabase/provider configuration. The account chooser can show accounts available in Google’s browser session or offer “Use another account”; the website cannot enumerate all Gmail accounts.
+4. Configure WhatsApp phone OTP through a Twilio or Twilio Verify WhatsApp sender. Supabase currently documents WhatsApp OTP only with these providers. Use full E.164 numbers, verify regional requirements and message costs, and tell users why a code is sent.
+5. Before enabling either provider, add CAPTCHA, set and review rate limits, monitor authentication logs, and test error behavior with invited and uninvited test identities. Use generic public responses where account existence could otherwise be exposed. Configure MFA for administrator accounts.
+6. If the portal will ever read data, enable and test Row Level Security on every table and storage bucket. Policies must enforce user, project, and role boundaries on every operation. Test with ordinary invited accounts and cross-account attempts, not only an administrator.
+7. Publish a privacy notice covering account identifiers, phone numbers, OTP delivery, nickname, support use, retention, and deletion before collecting real user data.
+8. Review the pinned Supabase JavaScript CDN dependency and script integrity/supply-chain plan before activation. The library is loaded only when public auth configuration is set, but a third-party script executes with the page’s browser privileges.
+9. Only after provider, redirect, signup, abuse controls, privacy, and access rules are configured should the owner set provider flags to true. Keep the sign-in link out of public navigation until then.
 
-Official references: [Supabase Auth](https://supabase.com/docs/guides/auth), [password security](https://supabase.com/docs/guides/auth/password-security), [rate limits](https://supabase.com/docs/guides/auth/rate-limits), [CAPTCHA setup](https://supabase.com/docs/guides/auth/auth-captcha), and [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security).
+Supabase’s general Auth configuration supports disabling new-user signups; if access must be invite-only, use a server-side signup restriction rather than a UI check. Google sign-in should use the provider’s account chooser prompt, but that affects account selection only, not authorization.
 
-## Before this can hold real client information
+## Google Sheets lead data
 
-The portal route checks a Supabase session in browser JavaScript. That is only suitable for a sign-in shell with no secrets. A client can still download any static page or asset from GitHub Pages. For private records, request data from Supabase with RLS or from an authenticated server API; never embed records in HTML, a JSON file, or JavaScript. For highly sensitive work, move the portal to a server-rendered application with server-managed sessions and secure, HttpOnly cookies.
+The public website does not submit a contact form to Google Sheets. Do not add a service-account key, unrestricted Apps Script URL, or sheet contents to browser code. If lead intake is approved later, use a server-side Edge Function to validate and append the minimal agreed fields. Keep the Google credential in server-side function secrets and grant its service account access only to the private lead Sheet. Add consent, CAPTCHA, rate limiting, retention, access ownership, and deletion before collecting real contacts. See [LEAD_INTAKE_GOOGLE_SHEETS.md](LEAD_INTAKE_GOOGLE_SHEETS.md).
 
-The current page does not create accounts, store profiles, or expose an application table. Supabase Auth's internal auth schema owns credentials. Add profile or project tables only when their access model is defined and RLS policies are ready.
+## Verification status
+
+- Public sign-in controls: disabled in the current configuration.
+- Supabase URL/key: blank; no live provider requests are made by the static sign-in page.
+- Client portal: placeholder only; contains no private data and is publicly served.
+- Google Sheets: no form, endpoint, or credential configured.
+- Security assurance: no claim that the site has no vulnerabilities or is secure for private records. A full audit and live-provider verification remain necessary before any sensitive-data feature is enabled.
+
+## Official references
+
+- [Supabase Auth general configuration](https://supabase.com/docs/guides/auth/general-configuration)
+- [Supabase Google login](https://supabase.com/docs/guides/auth/social-login/auth-google)
+- [Supabase phone login and WhatsApp support](https://supabase.com/docs/guides/auth/phone-login?showSmsProvider=Twilio)
+- [Supabase JavaScript signInWithOtp](https://supabase.com/docs/reference/javascript/auth-signinwithotp)
+- [Supabase CAPTCHA](https://supabase.com/docs/guides/auth/auth-captcha)
+- [Supabase rate limits](https://supabase.com/docs/guides/auth/rate-limits)
+- [Supabase Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security)
+- [Supabase Before User Created Hook](https://supabase.com/docs/guides/auth/auth-hooks/before-user-created-hook)
+- [Google OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect)

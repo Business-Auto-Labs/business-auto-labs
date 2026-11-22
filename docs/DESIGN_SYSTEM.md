@@ -2,7 +2,7 @@
 
 ## Direction
 
-The visual system combines warm ivory, natural beige, forest green, charcoal, and restrained metallic-gold details. Editorial serif headings add contrast; a system sans-serif keeps body copy readable and avoids remote font loading. The emphasized second line in the process heading is set upright in the same sans-serif stack for a clearer, more dependable finish. Content has a compact rhythm with enough room for clear reading and touch controls.
+The visual system pairs warm ivory and natural beige sections with a full-bleed forest-green homepage hero, a cream WhatsApp chat mockup, and a restrained gold service rail. Editorial serif headings and a high-contrast sans-serif body stack give the home page more presence without adding external fonts. The WhatsApp service card receives the strongest visual weight; other services use distinct, compact CSS illustrations. Content keeps a compact rhythm with enough room for comfortable reading and touch controls.
 
 ## Logo
 
@@ -44,3 +44,7 @@ Keep semantic headings in order, test every control with a keyboard, and preserv
 A small review of public automation-studio pages informed the information hierarchy, not copied text or visual assets. Betterlane groups WhatsApp assistants with workflow automation and explains human handoff. B3TA connects WhatsApp to business tools and presents discovery, build, and maintenance. BOTKILAT organizes its story around process discovery, design, delivery, and handover. The current homepage presents WhatsApp as one offer alongside websites, design, and social campaigns.
 
 References: [Betterlane](https://betterlaneagency.com/ai-automation-agency), [B3TA](https://b3ta.us/en/automation/), [BOTKILAT](https://botkilat.com/en), [Motion](https://motion.dev/), and [Webflow's GSAP license announcement](https://webflow.com/updates/gsap-becomes-free).
+
+## Dedicated service pages
+
+The homepage routes to four focused pages: WhatsApp chatbot automation, web development, logo and graphic design, and video/social campaigns with Meta Ads. Each page reuses the same visual tokens, header/footer patterns, contact-choice dialog, and shared scripts while keeping its own service copy and SEO metadata. Primary actions open a service-specific WhatsApp draft when configured; phone and email options remain available. There is no live booking calendar or active lead form, so the pages request a conversation rather than imply a confirmed booking.

@@ -1,167 +1,245 @@
-// Supabase Auth manages identities and password hashes. This website never stores
-// or logs passwords in its own files or tables.
-const authSettings = window.BUSINESS_AUTH_CONFIG || {};
-const authStatus = document.querySelector("[data-auth-status]");
-const setupNotice = document.querySelector("[data-auth-setup]");
-const loginForm = document.querySelector("[data-login-form]");
-const recoveryForm = document.querySelector("[data-recovery-form]");
-const resetButton = document.querySelector("[data-reset-button]");
-const signoutButton = document.querySelector("[data-signout]");
-const portalEmail = document.querySelector("[data-portal-email]");
-const isConfigured = Boolean(authSettings.supabaseUrl && authSettings.publishableKey);
-const isPortal = Boolean(signoutButton);
-const isRecovery = new URLSearchParams(location.search).get("mode") === "recovery";
-let authClient = null;
+// The browser handles identity redirects only when public auth configuration is complete.
+// Supabase stores identities; this site never collects or stores passwords.
+(() => {
+  const settings = window.BUSINESS_AUTH_CONFIG || {};
+  const status = document.querySelector("[data-auth-status]");
+  const setupNotice = document.querySelector("[data-auth-setup]");
+  const googleButton = document.querySelector("[data-google-login]");
+  const phoneForm = document.querySelector("[data-phone-form]");
+  const phoneInput = phoneForm?.querySelector("[name='phone']");
+  const otpForm = document.querySelector("[data-otp-form]");
+  const otpInput = otpForm?.querySelector("[name='otp']");
+  const nicknameForm = document.querySelector("[data-nickname-form]");
+  const nicknameInput = nicknameForm?.querySelector("[name='nickname']");
+  const backToPhone = document.querySelector("[data-back-to-phone]");
+  const sendOtp = document.querySelector("[data-send-otp]");
+  const signoutButton = document.querySelector("[data-signout]");
+  const portalGreeting = document.querySelector("[data-portal-email]");
+  const isPortal = Boolean(signoutButton);
+  const googleEnabled = settings.googleEnabled === true;
+  const whatsappEnabled = settings.whatsappEnabled === true;
+  const isConfigured = Boolean(settings.supabaseUrl && settings.publishableKey && (googleEnabled || whatsappEnabled));
+  let client = null;
+  let pendingUser = null;
+  let lastHandledUserId = "";
 
-function showMessage(message, isError) {
-  if (!authStatus) return;
-  authStatus.textContent = message;
-  authStatus.classList.toggle("is-error", Boolean(isError));
-}
-function setBusy(form, busy) {
-  const button = form?.querySelector('button[type="submit"]');
-  if (button) { button.disabled = busy; button.setAttribute("aria-busy", String(busy)); }
-}
-function disableLoginControls() {
-  [loginForm, recoveryForm].filter(Boolean).forEach((form) => {
-    form.querySelectorAll("input,button").forEach((field) => { field.disabled = true; });
-  });
-  if (resetButton) resetButton.disabled = true;
-}
-function isRateLimited(error) {
-  return error?.status === 429 || /rate limit|too many/i.test(error?.message || "");
-}
+  function showMessage(message, isError = false) {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.toggle("is-error", isError);
+  }
 
-document.querySelectorAll("[data-current-year]").forEach((element) => {
-  element.textContent = String(new Date().getFullYear());
-});
+  function setBusy(button, busy, busyLabel, normalLabel) {
+    if (!button) return;
+    button.disabled = busy;
+    button.setAttribute("aria-busy", String(busy));
+    if (busyLabel && normalLabel) button.textContent = busy ? busyLabel : normalLabel;
+  }
 
-if (setupNotice) setupNotice.hidden = isConfigured;
-
-if (isConfigured && window.supabase?.createClient) {
-  try {
-    authClient = window.supabase.createClient(authSettings.supabaseUrl, authSettings.publishableKey);
-    authClient.auth.onAuthStateChange((event, session) => {
-      if (isPortal && portalEmail && session?.user?.email) portalEmail.textContent = "Signed in as " + session.user.email;
-      if (event === "PASSWORD_RECOVERY" && recoveryForm) {
-        recoveryForm.hidden = false;
-        if (loginForm) loginForm.hidden = true;
-        if (resetButton) resetButton.hidden = true;
-        showMessage("Choose a new password for your account.", false);
-      }
+  function setInitialAvailability() {
+    if (googleButton) googleButton.disabled = !isConfigured || !googleEnabled;
+    if (signoutButton) signoutButton.disabled = !isConfigured;
+    phoneForm?.querySelectorAll("input,button").forEach((field) => {
+      field.disabled = !isConfigured || !whatsappEnabled;
     });
-    authClient.auth.getSession().then(({ data }) => {
-      const session = data?.session;
-      if (isPortal && !session) { location.replace("../login.html?message=session"); return; }
-      if (isPortal && portalEmail && session?.user?.email) {
-        portalEmail.textContent = "Signed in as " + session.user.email;
-        showMessage("You are signed in. No private project data is connected yet.", false);
+    if (setupNotice) setupNotice.hidden = isConfigured;
+    if (!isConfigured) {
+      showMessage(isPortal
+        ? "This public portal preview has no private data and sign-in is not configured."
+        : "Sign-in is not active. Do not enter a phone number or verification code yet.");
+    }
+  }
+
+  function loadSupabaseLibrary() {
+    if (window.supabase?.createClient) return Promise.resolve(window.supabase);
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js";
+      script.crossOrigin = "anonymous";
+      script.referrerPolicy = "no-referrer";
+      script.onload = () => window.supabase?.createClient ? resolve(window.supabase) : reject(new Error("Sign-in library unavailable"));
+      script.onerror = () => reject(new Error("Sign-in library unavailable"));
+      document.head.append(script);
+    });
+  }
+
+  function showNickname(user) {
+    pendingUser = user;
+    if (setupNotice) setupNotice.hidden = true;
+    if (googleButton) googleButton.hidden = true;
+    if (phoneForm) phoneForm.hidden = true;
+    if (otpForm) otpForm.hidden = true;
+    if (nicknameForm) nicknameForm.hidden = false;
+    showMessage("Identity confirmed. Choose a nickname for your workspace.");
+    nicknameInput?.focus();
+  }
+
+  function handleSignedInUser(user) {
+    if (!user || user.id === lastHandledUserId) return;
+    lastHandledUserId = user.id;
+    const nickname = String(user.user_metadata?.nickname || "").trim();
+    if (isPortal) {
+      if (portalGreeting) portalGreeting.textContent = "Welcome, " + (nickname || user.email || user.phone || "client") + ".";
+      showMessage("Signed in. This portal preview contains no private project records.");
+      return;
+    }
+    if (nickname) {
+      location.replace("portal/");
+      return;
+    }
+    showNickname(user);
+  }
+
+  async function initialize() {
+    document.querySelectorAll("[data-current-year]").forEach((element) => {
+      element.textContent = String(new Date().getFullYear());
+    });
+    setInitialAvailability();
+    if (!isConfigured) return;
+
+    try {
+      const supabase = await loadSupabaseLibrary();
+      client = supabase.createClient(settings.supabaseUrl, settings.publishableKey, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+      const { data, error } = await client.auth.getSession();
+      if (error) throw error;
+      if (isPortal && !data.session) {
+        location.replace("../login.html?message=session");
+        return;
       }
-      if (!isPortal && session && !isRecovery) location.replace("portal/");
-    }).catch(() => showMessage("We could not check your session. Refresh the page and try again.", true));
-  } catch {
-    authClient = null;
-    disableLoginControls();
-    if (setupNotice) {
-      setupNotice.hidden = false;
-      setupNotice.textContent = "The sign-in service could not be initialized. Check the public provider settings and try again.";
+      if (data.session?.user) handleSignedInUser(data.session.user);
+      client.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_IN" && session?.user) handleSignedInUser(session.user);
+        if (event === "SIGNED_OUT" && isPortal) location.replace("../login.html");
+      });
+      const params = new URLSearchParams(location.search);
+      if (params.get("message") === "session" && !isPortal) showMessage("Please sign in to continue.");
+      if (params.has("error")) showMessage("We could not complete sign-in. Please try again or contact the studio.", true);
+    } catch {
+      if (googleButton) googleButton.disabled = true;
+      phoneForm?.querySelectorAll("input,button").forEach((field) => { field.disabled = true; });
+      if (setupNotice) {
+        setupNotice.hidden = false;
+        setupNotice.textContent = "The sign-in service could not be initialized. Sign-in controls are disabled; contact the studio if you need access.";
+      }
+      showMessage("Sign-in is unavailable right now. No details were sent.", true);
     }
   }
-} else {
-  disableLoginControls();
-  if (isPortal) showMessage("Portal setup is incomplete. Sign-in is not active yet.", true);
-  if (isConfigured && setupNotice) {
-    setupNotice.hidden = false;
-    setupNotice.textContent = "The sign-in library could not be loaded. Check your connection and reload this page.";
-  }
-}
 
-if (loginForm) loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!authClient) { showMessage("Sign-in is not configured yet.", true); return; }
-  const values = new FormData(loginForm);
-  const email = String(values.get("email") || "").trim();
-  const password = String(values.get("password") || "");
-  setBusy(loginForm, true);
-  showMessage("Signing in…", false);
-  try {
-    const { error } = await authClient.auth.signInWithPassword({ email, password });
-    if (error) {
-      showMessage(isRateLimited(error) ? "Too many attempts. Please wait a few minutes before trying again." : "We could not sign you in with those details. Check them or contact the studio.", true);
+  googleButton?.addEventListener("click", async () => {
+    if (!client || !googleEnabled) return;
+    setBusy(googleButton, true, "Opening Google…", "Continue with Google");
+    showMessage("Continue in Google’s account chooser.");
+    try {
+      const redirectTo = settings.siteBaseUrl.replace(/\/$/, "") + "/login.html";
+      const { error } = await client.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo, queryParams: { prompt: "select_account" } }
+      });
+      if (error) throw error;
+    } catch {
+      showMessage("We could not start Google sign-in. Check your connection or contact the studio.", true);
+      setBusy(googleButton, false, "Opening Google…", "Continue with Google");
+    }
+  });
+
+  phoneForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!client || !whatsappEnabled) return;
+    const phone = String(new FormData(phoneForm).get("phone") || "").trim();
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+      showMessage("Enter the full international number, including + and country code.", true);
+      phoneInput?.focus();
       return;
     }
-    location.assign("portal/");
-  } catch {
-    showMessage("The sign-in service is unavailable right now. Please try again shortly.", true);
-  } finally {
-    setBusy(loginForm, false);
-  }
-});
+    setBusy(sendOtp, true, "Requesting code…", "Send sign-in code");
+    showMessage("Checking whether this number can receive a sign-in code…");
+    try {
+      const { error } = await client.auth.signInWithOtp({
+        phone,
+        options: { channel: "whatsapp", shouldCreateUser: false }
+      });
+      if (error) throw error;
+      phoneForm.hidden = true;
+      if (otpForm) otpForm.hidden = false;
+      if (otpInput) otpInput.required = true;
+      showMessage("If this number is eligible, a code will arrive on WhatsApp. Enter it to continue.");
+      otpInput?.focus();
+    } catch {
+      // Use a generic response so this public page does not reveal whether a phone is registered.
+      showMessage("We could not send a code. Check the number or contact the studio.", true);
+    } finally {
+      setBusy(sendOtp, false, "Requesting code…", "Send sign-in code");
+    }
+  });
 
-if (resetButton) resetButton.addEventListener("click", async () => {
-  if (!authClient) { showMessage("Password recovery is not configured yet.", true); return; }
-  const emailInput = document.querySelector("#email");
-  const email = emailInput?.value.trim();
-  if (!email) {
-    emailInput?.focus();
-    showMessage("Enter your business email above, then choose password reset again.", true);
-    return;
-  }
-  resetButton.disabled = true;
-  showMessage("Sending a reset link if this account is eligible…", false);
-  const redirectUrl = authSettings.siteBaseUrl.replace(/\/$/, "") + "/login.html?mode=recovery";
-  try {
-    const { error } = await authClient.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
-    if (error && isRateLimited(error)) {
-      showMessage("Too many requests. Please wait before requesting another email.", true);
+  otpForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!client || !phoneInput?.value) return;
+    const token = String(new FormData(otpForm).get("otp") || "").trim();
+    if (!/^\d{4,10}$/.test(token)) {
+      showMessage("Enter the digits from your WhatsApp message.", true);
+      otpInput?.focus();
       return;
     }
-    // Use the same response for known and unknown accounts to avoid account discovery.
-    showMessage("If the account is eligible, a password reset link will arrive by email.", false);
-  } catch {
-    showMessage("The reset service is unavailable. Please try again shortly.", true);
-  } finally {
-    resetButton.disabled = false;
-  }
-});
+    const button = otpForm.querySelector('button[type="submit"]');
+    setBusy(button, true, "Verifying…", "Verify and continue");
+    showMessage("Verifying your code…");
+    try {
+      const { data, error } = await client.auth.verifyOtp({ phone: phoneInput.value.trim(), token, type: "sms" });
+      if (error) throw error;
+      if (data?.user) handleSignedInUser(data.user);
+    } catch {
+      showMessage("That code could not be verified. Check it or request a new one.", true);
+    } finally {
+      setBusy(button, false, "Verifying…", "Verify and continue");
+    }
+  });
 
-if (recoveryForm) recoveryForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!authClient) { showMessage("Password recovery is not configured yet.", true); return; }
-  const values = new FormData(recoveryForm);
-  const password = String(values.get("new-password") || "");
-  const confirmation = String(values.get("confirm-password") || "");
-  if (password.length < 12) { showMessage("Use at least 12 characters for your new password.", true); return; }
-  if (password !== confirmation) { showMessage("The password fields do not match.", true); return; }
-  setBusy(recoveryForm, true);
-  try {
-    const { error } = await authClient.auth.updateUser({ password });
-    if (error) { showMessage("We could not update the password. Request a fresh reset link and try again.", true); return; }
-    showMessage("Password updated. You can now sign in with the new password.", false);
-    recoveryForm.hidden = true;
-    if (loginForm) loginForm.hidden = false;
-    if (resetButton) resetButton.hidden = false;
-    document.querySelector("#password")?.focus();
-  } catch {
-    showMessage("The password service is unavailable. Please try again shortly.", true);
-  } finally {
-    setBusy(recoveryForm, false);
-  }
-});
+  backToPhone?.addEventListener("click", () => {
+    if (otpForm) otpForm.hidden = true;
+    if (phoneForm) phoneForm.hidden = false;
+    if (otpInput) otpInput.value = "";
+    showMessage("Enter the invited WhatsApp number again.");
+    phoneInput?.focus();
+  });
 
-if (signoutButton) signoutButton.addEventListener("click", async () => {
-  if (!authClient) { showMessage("Sign-out is not configured.", true); return; }
-  signoutButton.disabled = true;
-  try {
-    const { error } = await authClient.auth.signOut();
-    if (error) { showMessage("We could not sign you out. Please try again.", true); signoutButton.disabled = false; return; }
-    location.replace("../login.html");
-  } catch {
-    signoutButton.disabled = false;
-    showMessage("The sign-out service is unavailable. Please try again.", true);
-  }
-});
+  nicknameForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!client || !pendingUser) return;
+    const nickname = String(new FormData(nicknameForm).get("nickname") || "").trim();
+    if (nickname.length < 2 || nickname.length > 40) {
+      showMessage("Choose a nickname from 2 to 40 characters.", true);
+      nicknameInput?.focus();
+      return;
+    }
+    const button = nicknameForm.querySelector('button[type="submit"]');
+    setBusy(button, true, "Saving…", "Save nickname and continue");
+    showMessage("Saving your workspace nickname…");
+    try {
+      const { error } = await client.auth.updateUser({ data: { nickname } });
+      if (error) throw error;
+      location.replace("portal/");
+    } catch {
+      showMessage("We could not save that nickname. Please try again.", true);
+    } finally {
+      setBusy(button, false, "Saving…", "Save nickname and continue");
+    }
+  });
 
-if (new URLSearchParams(location.search).get("message") === "session" && !isPortal) {
-  showMessage("Please sign in to continue.", false);
-}
+  signoutButton?.addEventListener("click", async () => {
+    if (!client) return;
+    signoutButton.disabled = true;
+    try {
+      const { error } = await client.auth.signOut();
+      if (error) throw error;
+      location.replace("../login.html");
+    } catch {
+      signoutButton.disabled = false;
+      showMessage("We could not sign you out. Please try again.", true);
+    }
+  });
+
+  initialize();
+})();

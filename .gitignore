@@ -5,3 +5,18 @@
 
 # Private case-study worksheet; do not publish with GitHub Pages
 /docs/CASE_STUDY_WORKSHEET.md
+.taste-skill/
+
+# Local prospecting research and contact datasets; keep private from GitHub Pages
+/all_ddg_results.json
+/crawled_results.json
+/enriched_leads.json
+/justdial_category_urls.json
+/justdial_listings.json
+/lead_scraper.py
+/mumbai_leads_report.csv
+/mumbai_pet_shops.csv
+/pet_shops_with_phones.json
+/raw_search_results*.json
+/sync_results*.json
+/urls_to_crawl.json

@@ -6,7 +6,7 @@ Open index.html. Its head contains the title, search description, canonical URL,
 
 The shared Connected Monogram lockup is assets/logo.svg. Its wordmark uses the site’s Aptos, Segoe UI, and Arial sans-serif stack rather than an external font. assets/logo-mark.svg is reused for the favicon and portal illustration. Header logos link home from both root and nested pages. Three directions appear in the noindex comparison at docs/logo-exploration.html. CSS applies a slight hover/focus lift and turns it off under reduced-motion settings.
 
-The hero presents WhatsApp automation, websites, design, and social campaigns. The “What we build” section contains four service cards. Each card has a heading and descriptive text that remains readable without animation, plus a decorative HTML illustration:
+The hero presents WhatsApp automation, websites, design, and social campaigns. The “What we build” section contains four service cards linking to dedicated WhatsApp automation, web development, graphic design, and Meta Ads/social content pages. Each page has its own title, description, canonical, Open Graph data, Service schema, and service-specific contact prompt. Each card has a heading and descriptive text that remains readable without animation, plus a decorative HTML illustration:
 
 - WhatsApp automation shows a customer message, a product choice, and a link handoff.
 - Website building shows a compact responsive-page preview.
@@ -35,21 +35,21 @@ The larger workflow demo uses short transitions when the visitor starts playback
 
 ## Follow the scripts and contact options
 
-js/config.js contains the public contact email and optional WhatsApp number. The WhatsApp button remains hidden until the owner confirms the correct line, adds its full international number, and enables the confirmation flag. The two phone links in index.html use only the digits supplied by the owner; no country code or WhatsApp line is assumed.
+js/config.js contains the public email and the owner-confirmed +91 WhatsApp lines for Dhruv and Neil. Their contact dialogs offer calling, copying, and a WhatsApp message draft. The supplied phone links remain available as mailto:/tel: fallbacks when JavaScript is unavailable.
 
 js/contact-actions.js turns a click on the email address into a dialog with “Open Gmail to compose” and “Copy email address.” A click on either phone number shows “Call” and “Copy phone number.” The visitor chooses the app action; the site never dials or opens Gmail automatically. If clipboard access is blocked, a selectable input provides a manual copy fallback. Without JavaScript, the original mailto: and tel: links still work.
 
-js/main.js handles the mobile menu, reveal effects, displayed year, configured email link, optional WhatsApp link, and subtle hero tilt for fine-pointer devices. The separate login.html page loads js/auth-config.js and js/auth.js; its provider URL and public key are blank. Follow [SECURITY_AUTH.md](SECURITY_AUTH.md) before configuring authentication. Never save passwords locally or in a public table.
+js/main.js handles the mobile menu, reveal effects, displayed year, configured email link, optional WhatsApp link, and subtle hero tilt for fine-pointer devices. The separate login.html page loads js/auth-config.js and js/auth.js. Its Supabase URL/key are blank, provider switches are off, and the public nav has no login link. Google OAuth account-selection and WhatsApp OTP controls are scaffolds only; a nickname is display metadata. Follow [SECURITY_AUTH.md](SECURITY_AUTH.md) before configuring providers. GitHub Pages cannot protect private records, and passwords must never be stored in this repository or a public table.
 
 ## Safe edits
 
 - Change the vector wordmark in assets/logo.svg and its symbol in assets/logo-mark.svg together; compare alternate directions in docs/logo-exploration.html.
-- Change service headings and descriptions in index.html; keep claims within the work the team actually offers.
+- Change homepage copy in index.html and each service page in its own HTML file; keep claims within the work the team actually offers.
 - Adjust color tokens at the beginning of css/styles.css.
 - Tune the service-card animation keyframes in the same file. Keep a static visual state and preserve the reduced-motion rule.
 - Edit the fictional WhatsApp examples in js/workflow-demo.js; keep their business names labeled as examples.
 - Add client stories only with verified details and permission to publish.
 - Describe Meta Ads work as an agreed service, not a promised outcome.
 - Add a WhatsApp number only in full international format after confirming it is the correct business line.
-- Configure login only by following [SECURITY_AUTH.md](SECURITY_AUTH.md). Keep secret keys out of this repository.
+- Do not activate login or lead intake until the controls in [SECURITY_AUTH.md](SECURITY_AUTH.md) and [LEAD_INTAKE_GOOGLE_SHEETS.md](LEAD_INTAKE_GOOGLE_SHEETS.md) are implemented and reviewed. Keep secret keys out of this repository.
 - Preview desktop and phone widths, navigate with Tab and arrow keys, play and pause the example, open each contact option, and enable reduced motion.

@@ -2,7 +2,7 @@
 
 ## Preview locally
 
-Open this folder in VS Code and use Live Server, or run python -m http.server 8000 from this project folder and visit http://localhost:8000. The static marketing page needs no build step. Login remains unavailable until a provider is configured with a localhost redirect URL.
+Open this folder in VS Code and use Live Server, or run python -m http.server 8000 from this project folder and visit http://localhost:8000. The static site needs no build step. The homepage and four service pages can be previewed as static files. Login remains inactive until Supabase, Google OAuth, WhatsApp OTP, redirects, abuse controls, and server-enforced access rules are configured. Do not expose private data through GitHub Pages.
 
 ## Publish with GitHub Pages
 
@@ -14,7 +14,7 @@ The repository is Business-Auto-Labs/business-auto-labs. The configured public d
 4. In GitHub, open repository Settings → Pages and confirm the source. Check that the Pages deployment completes successfully.
 5. Open the published URL, review phone and desktop layouts, click contact links, and check for browser console errors.
 
-Do not commit private keys, passwords, real client records, or private project files. js/auth-config.js may contain only the Supabase project URL and public publishable key.
+Do not commit private keys, passwords, real client records, or private project files. js/auth-config.js may contain only the Supabase project URL and public publishable key. Keep provider switches off until the controls in SECURITY_AUTH.md are complete.
 
 ## Supabase login setup
 

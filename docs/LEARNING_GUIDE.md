@@ -28,9 +28,9 @@ Update the portfolio note only with a real, approved project. Include the contex
 
 ## Checkpoint 7: Try contact actions
 
-Click the email and each phone number. Checkpoint: the email dialog offers Gmail and copy; each phone dialog offers the phone app and copy. Test keyboard focus and Escape. The phone links use the supplied digits without an assumed country code.
+Click the email and each phone number. Checkpoint: the email dialog offers Gmail and copy; each phone dialog offers the phone app and copy. Test keyboard focus and Escape. The currently configured Dhruv and Neil numbers include the owner-confirmed +91 country code; use the exact current values in js/config.js.
 
-To show a WhatsApp button, confirm which business line is WhatsApp, then add its complete international digits to whatsappNumber and set its confirmation flag to true in js/config.js. Do not guess which supplied number is the WhatsApp line.
+To change WhatsApp contact routing, confirm the owner-approved line and international number first, then update whatsappNumber and the matching contact record and confirmation flags in js/config.js.
 
 ## Checkpoint 8: Review access and motion
 

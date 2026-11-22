@@ -10,7 +10,8 @@ A responsive, accessible static website introducing four business services: What
 
 ## Project map
 
-- index.html — page content, semantic sections, SEO and social metadata, service illustrations, and contact-options dialog.
+- index.html — homepage content, semantic sections, metadata, service overview, and contact-options dialog.
+- whatsapp-automation.html, web-development.html, graphic-design.html, and meta-ads.html — dedicated service pages with unique metadata and direct contact routes.
 - css/styles.css — color and type tokens, responsive layout, accessible dialog, and light CSS motion for service illustrations.
 - js/config.js — public contact email and optional WhatsApp configuration.
 - js/main.js — mobile navigation, reveal effects, current year, and optional WhatsApp link.
@@ -19,7 +20,7 @@ A responsive, accessible static website introducing four business services: What
 - login.html, portal/index.html, js/auth-config.js, js/auth.js, and css/auth.css — inactive Supabase login scaffold and empty client-area shell.
 - assets/ — primary logo lockup, standalone mark, two alternate logo concepts, favicon, and social-sharing artwork.
 - robots.txt and sitemap.xml — crawler guidance for the intended Pages URL.
-- docs/ — architecture, deployment, SEO, learning, security, and case-study guidance.
+- docs/ — architecture, deployment, SEO, learning, security, case-study guidance, the redesign checklist, and a secure future Sheets intake plan.
 
 ## Logo directions
 
@@ -38,9 +39,9 @@ Add a real case study only after its details are verified and permission to publ
 
 ## Contact and login
 
-The public contact email and supplied phone numbers appear on the page. With JavaScript enabled, selecting them opens a dialog to open Gmail or the device's phone app, or copy the address or number. Without JavaScript, their mailto: and tel: links still work. The phone links keep the supplied digits; no country code or WhatsApp line is inferred.
+The public contact email and supplied phone numbers appear on the page. With JavaScript enabled, selecting them opens a dialog to compose in Gmail or copy the address, and to call, copy, or open a WhatsApp draft for Dhruv or Neil. The confirmed WhatsApp links use the supplied +91 numbers. Without JavaScript, the original mailto: and tel: links remain available.
 
-The WhatsApp button stays hidden until the owner confirms the correct line's full international number and sets its confirmation flag in js/config.js. The static site has no contact-form backend.
+The WhatsApp actions are configured for the confirmed +91 Dhruv and Neil numbers in js/config.js. The static site has no contact-form backend.
 
 The login page is a Supabase Auth scaffold, not an active client portal. Its project URL and public key are blank, and no private project records are included. GitHub Pages publishes static files; it cannot enforce private access. Read [docs/SECURITY_AUTH.md](docs/SECURITY_AUTH.md) before configuring authentication or storing private data.
 
