@@ -2,21 +2,20 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Georgia", "serif"],
+        sans: ["ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         brand: {
-          primary: "#1e40af",
+          primary: "#2563eb",
           secondary: "#3b82f6",
-          accent: "#f59e0b",
+          accent: "#059669",
         },
       },
     },

@@ -2,10 +2,10 @@
 .claude/
 /memory/
 /*.tmp.txt
+.taste-skill/
 
 # Private case-study worksheet; do not publish with GitHub Pages
 /docs/CASE_STUDY_WORKSHEET.md
-.taste-skill/
 
 # Local prospecting research and contact datasets; keep private from GitHub Pages
 /all_ddg_results.json
@@ -21,21 +21,32 @@
 /sync_results*.json
 /urls_to_crawl.json
 
-# Dependencies
+# Dependencies and generated frontend output
 node_modules/
-/frontend/node_modules
-/backend/.eggs
-/backend/build
-/backend/*.egg-info
+/frontend/.next/
+/frontend/out/
+/backend/.eggs/
+/backend/build/
+/backend/*.egg-info/
 
-# Environment variables
-/.env
-/.env.local
-/.env.*.local
+# Python environments, caches, and local SQLite files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.db
+*.sqlite
+*.sqlite3
 
-# Production
-/build
-/.next/
+# Environment variables in any project directory. Keep example templates versioned.
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Production output
+/build/
 /out/
 
 # IDE
@@ -67,3 +78,5 @@ Thumbs.db
 /WEBSITE_LAUNCH_CHECKLIST.md
 /redesign-preview.html
 
+# TypeScript incremental build cache
+*.tsbuildinfo

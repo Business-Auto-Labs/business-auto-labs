@@ -1,99 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import Head from "next/head";
+import { ApiHealthCard } from "../components/ApiHealthCard";
+import { DashboardShell } from "../components/DashboardShell";
 
-interface HealthStatus {
-  status: string;
-  service: string;
-}
-
-export default function Home() {
-  const [health, setHealth] = useState<HealthStatus | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch('http://localhost:8000/health')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data: HealthStatus) => {
-        setHealth(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch backend health:', err);
-        setError('Failed to connect to backend API');
-        setLoading(false);
-      });
-  }, []);
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="h-12 w-12 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
-            BAL
-          </div>
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Business Automation Labs
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Multi-Niche Lead Generation CRM
-        </p>
-      </div>
+    <>
+      <Head>
+        <title>Overview | Business Automation Labs CRM</title>
+        <meta name="description" content="Workspace status for the Business Automation Labs CRM foundation." />
+      </Head>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-gray-100">
-          <div className="space-y-6">
+      <DashboardShell>
+        <section aria-labelledby="overview-title" id="overview">
+          <p className="text-sm font-semibold text-brand-primary">Workspace</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl" id="overview-title">
+            System overview
+          </h1>
+          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+            Check the application services connected to this local workspace.
+          </p>
+        </section>
+
+        <section aria-labelledby="system-health-title" className="mt-8 sm:mt-10" id="system-health">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 border-b pb-2">
-                System Status
-              </h3>
-              <div className="mt-4 space-y-3">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-500">Frontend Service:</span>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Operational (Next.js)
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-500">Backend API:</span>
-                  {loading ? (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      Checking...
-                    </span>
-                  ) : error ? (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                      Offline
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      {health?.status === 'healthy' ? 'Healthy (FastAPI)' : health?.status}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <h2 className="text-lg font-semibold text-slate-950" id="system-health-title">Application services</h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Backend status is checked from this page and can be retried at any time.
+              </p>
             </div>
-
-            <div className="rounded-md bg-blue-50 p-4 border border-blue-100">
-              <div className="flex">
-                <div className="ml-3 flex-1 md:flex md:justify-between">
-                  <p className="text-sm text-blue-700">
-                    Phase 1 Foundation established successfully. API communication verified.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t pt-4 text-xs text-gray-500 text-center">
-              Business Automation Labs CRM &copy; {new Date().getFullYear()}
-            </div>
+            <p className="text-xs font-medium text-slate-500">Foundation environment</p>
           </div>
-        </div>
-      </div>
-    </div>
+
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-base font-semibold text-slate-950">Frontend</h3>
+                  <p className="mt-1 text-sm text-slate-600">Next.js workspace interface</p>
+                </div>
+                <span className="inline-flex min-h-8 items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 text-xs font-semibold text-emerald-800">
+                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-600" />
+                  Serving page
+                </span>
+              </div>
+              <p className="mt-6 border-t border-slate-100 pt-4 text-sm leading-6 text-slate-600">
+                The frontend is serving this workspace. The backend connection is reported separately.
+              </p>
+            </article>
+
+            <ApiHealthCard />
+          </div>
+        </section>
+      </DashboardShell>
+    </>
   );
 }

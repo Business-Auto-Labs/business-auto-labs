@@ -1,0 +1,2 @@
+# Optional local PostgreSQL driver. SQLite is the zero-setup default.
+psycopg[binary]>=3.1,<4
