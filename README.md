@@ -1,60 +1,140 @@
-# Business Automation Labs
+# Business Automation Labs CRM
 
-A responsive, accessible static website introducing four business services: WhatsApp chatbot automation, business websites, logo and graphic design, and edited social content with Meta Ads campaign support. The public site uses HTML, CSS, and vanilla JavaScript; it has no build step or animation framework.
+A multi-niche, multi-country lead-generation CRM designed to discover, qualify, organise and manage potential business clients.
 
-## Open and preview
+## Technology Stack
 
-1. Open this folder in VS Code.
-2. Preview with Live Server, or run python -m http.server 8000 in this folder and open http://localhost:8000.
-3. Read the [code walkthrough](docs/CODE_WALKTHROUGH.md) alongside the source.
+- **Frontend**: Next.js, TypeScript, Tailwind CSS
+- **Backend**: Python, FastAPI
+- **Database**: PostgreSQL / Supabase (planned)
+- **Background Processing**: Redis and Celery (planned)
 
-## Project map
+## Project Structure
 
-- index.html — homepage content, semantic sections, metadata, service overview, and contact-options dialog.
-- whatsapp-automation.html, web-development.html, graphic-design.html, and meta-ads.html — dedicated service pages with unique metadata and direct contact routes.
-- css/styles.css — color and type tokens, responsive layout, accessible dialog, and light CSS motion for service illustrations.
-- js/config.js — public contact email and optional WhatsApp configuration.
-- js/main.js — mobile navigation, reveal effects, current year, and optional WhatsApp link.
-- js/workflow-demo.js — three selectable, illustrative WhatsApp chatbot journeys for a shop, appointment studio, and café.
-- js/contact-actions.js — Gmail compose, phone-app call, and copy choices.
-- login.html, portal/index.html, js/auth-config.js, js/auth.js, and css/auth.css — inactive Supabase login scaffold and empty client-area shell.
-- assets/ — primary logo lockup, standalone mark, two alternate logo concepts, favicon, and social-sharing artwork.
-- robots.txt and sitemap.xml — crawler guidance for the intended Pages URL.
-- docs/ — architecture, deployment, SEO, learning, security, case-study guidance, the redesign checklist, and a secure future Sheets intake plan.
+```
+Business-Auto-Labs-CRM/
+├── frontend/           # Next.js + TypeScript frontend
+│   ├── pages/          # Next.js routes
+│   ├── components/     # Reusable UI components
+│   ├── styles/         # Tailwind CSS configuration
+│   ├── public/         # Static assets
+│   ├── next.config.js  # Next.js configuration
+│   └── tailwind.config.js # Tailwind CSS configuration
+├── backend/            # FastAPI backend
+│   ├── main.py         # FastAPI application entry point
+│   ├── requirements.txt # Python dependencies
+│   └── .env.example    # Environment variables template
+├── .gitignore          # Git ignore rules
+└── README.md           # This file
+```
 
-## Logo directions
+## Prerequisites
 
-Three vector logo concepts are available for review in the [logo comparison preview](docs/logo-exploration.html). The Connected Monogram is the current site logo. Its wordmark uses the site’s dependable Aptos, Segoe UI, and Arial sans-serif stack for a clear, professional finish. The header logo links home on every existing page; its subtle hover lift is disabled for reduced-motion preferences.
+- Node.js >= 18.x
+- Python >= 3.11
+- npm or yarn
+- Git
 
-## What we offer
+## Getting Started
 
-1. **WhatsApp automation** — chatbots that can answer common questions, share product links, collect order or booking details, and hand requests to a person.
-2. **Business websites** — responsive websites that explain an offer and guide visitors to a useful next step.
-3. **Logos and graphic design** — logo, banner, and campaign-graphic design.
-4. **Video and social campaigns** — product-video and photo editing, social posts, and agreed Meta Ads campaign support.
+### 1. Clone the Repository
 
-The four small service illustrations are animated HTML and CSS sketches. They help visitors picture the kinds of work offered; they are not recordings of client projects or proof of campaign results. A separate interactive demo explains WhatsApp chatbot flows using fictional businesses. It does not send messages, process orders, take bookings, or promise sales.
+```bash
+git clone <repository-url>
+cd Business-Auto-Labs-CRM
+```
 
-Add a real case study only after its details are verified and permission to publish is confirmed. Keep unapproved project notes and the internal worksheet in private storage. Campaign copy should describe agreed deliverables and must not promise sales, reach, or audience growth.
+### 2. Install Frontend Dependencies
 
-## Contact and login
+```bash
+cd frontend
+npm install
+```
 
-The public contact email and supplied phone numbers appear on the page. With JavaScript enabled, selecting them opens a dialog to compose in Gmail or copy the address, and to call, copy, or open a WhatsApp draft for Dhruv or Neil. The confirmed WhatsApp links use the supplied +91 numbers. Without JavaScript, the original mailto: and tel: links remain available.
+### 3. Install Backend Dependencies
 
-The WhatsApp actions are configured for the confirmed +91 Dhruv and Neil numbers in js/config.js. The static site has no contact-form backend.
+```bash
+cd ../backend
+pip install -r requirements.txt
+```
 
-The login page is a Supabase Auth scaffold, not an active client portal. Its project URL and public key are blank, and no private project records are included. GitHub Pages publishes static files; it cannot enforce private access. Read [docs/SECURITY_AUTH.md](docs/SECURITY_AUTH.md) before configuring authentication or storing private data.
+### 4. Configure Environment Variables
 
-## Animation approach
+Create a `.env` file in the `backend/` directory:
 
-The four service-card previews use hand-authored HTML and CSS: a WhatsApp conversation, website preview, brand-board sketch, and social-campaign editing sequence. They run without a library or external asset. They are decorative; the visible headings and 16px descriptions explain each service. The reduced-motion setting freezes the decorative movement.
+```bash
+cp .env.example .env
+```
 
-The larger WhatsApp workflow demo is a vanilla JavaScript simulation. A visitor selects a fictional business and starts the conversation. Reduced-motion settings remove movement, and the conversation remains readable as ordinary page content.
+Edit the `.env` file with your configuration:
 
-## Website launch checklist
+```
+# Backend API Settings
+API_HOST=0.0.0.0
+API_PORT=8000
+DEBUG=True
+```
 
-For a reusable checklist and future site-audit prompt inputs, see [docs/WEBSITE_LAUNCH_CHECKLIST.md](docs/WEBSITE_LAUNCH_CHECKLIST.md).
+### 5. Start the Development Servers
 
-## Publish
+#### Frontend (Next.js)
 
-The site is configured to use `https://businessautomationlabs.com/`; the root `CNAME` file names this domain. The homepage canonical, social metadata, structured-data URL, authentication redirect base, robots sitemap reference, and sitemap use the custom domain. Follow [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) to check GitHub Pages DNS, HTTPS, and deployment status. Local edits do not confirm a live deployment, and sitemap submission does not guarantee indexing.
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend will be available at `http://localhost:3000`.
+
+#### Backend (FastAPI)
+
+```bash
+cd backend
+python main.py
+```
+
+The backend API will be available at `http://localhost:8000`.
+
+### 6. Verify the Health Check
+
+Visit `http://localhost:8000/health` to confirm the backend is running:
+
+```json
+{
+  "status": "healthy",
+  "service": "backend"
+}
+```
+
+## Available Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Root endpoint with welcome message |
+| `/health` | GET | Health check endpoint |
+| `/docs` | GET | Interactive API documentation (Swagger UI) |
+
+## Development
+
+### Frontend
+
+- Run `npm run dev` to start the Next.js development server
+- Run `npm run build` to build for production
+- Run `npm run lint` to lint the codebase
+
+### Backend
+
+- Run `python main.py` to start the FastAPI development server
+- Access the interactive API docs at `http://localhost:8000/docs`
+
+## Next Steps (Phase 2)
+
+- Configure PostgreSQL / Supabase database connection
+- Implement user authentication
+- Add lead discovery and qualification logic
+- Implement email verification
+- Build CRM pipeline management UI
+
+## License
+
+This project is proprietary software for Business Automation Labs.

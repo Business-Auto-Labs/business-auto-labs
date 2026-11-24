@@ -20,3 +20,50 @@
 /raw_search_results*.json
 /sync_results*.json
 /urls_to_crawl.json
+
+# Dependencies
+node_modules/
+/frontend/node_modules
+/backend/.eggs
+/backend/build
+/backend/*.egg-info
+
+# Environment variables
+/.env
+/.env.local
+/.env.*.local
+
+# Production
+/build
+/.next/
+/out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Old project files (keep only the new structure)
+/index.html
+/whatsapp-automation.html
+/web-development.html
+/graphic-design.html
+/meta-ads.html
+/portal/index.html
+/login.html
+/css/
+/js/
+/assets/
+/robots.txt
+/sitemap.xml
+/docs/
+/CASE_STUDY_WORKSHEET.md
+/LEAD_INTAKE_GOOGLE_SHEETS.md
+/WEBSITE_LAUNCH_CHECKLIST.md
+/redesign-preview.html
+
